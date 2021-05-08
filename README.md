@@ -33,7 +33,7 @@ The file above contains additional data relating to primary schools in Hampshire
 
 1. Find an establishment by local authority: Hampshire and Surrey. Includes open schools only.
 2. On the search results page I filtered the results to All-through, Middle Deemed Primary and Primary
-3. On the next page I opted to choose a specific set of data and entered the following fields: DistrictAdministrative(name), EstablishmentName, EstablishmentTypeGroup(name), LA(code), OfstedRating(name), PercentageFSM, PhaseOfEducation(name), ReligiousCharacter(name), URN
+3. On the next page I opted to choose a specific set of data and entered the following fields: DistrictAdministrative(name), EstablishmentNumber, EstablishmentName, EstablishmentTypeGroup(name), LA(code), OfstedRating(name), PercentageFSM, PhaseOfEducation(name), ReligiousCharacter(name), URN
 
 ### ref
 Contains reference materials related to this analysis.
