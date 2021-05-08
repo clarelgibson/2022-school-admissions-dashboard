@@ -25,6 +25,14 @@ f_performance <-
   # remove duplicated columns
   select(!ends_with(c(".x", ".y"))) %>% 
   
+  # summarise progress scores as average of the three academic years
+  group_by(urn) %>% 
+  mutate(readprog = mean(readprog, na.rm = TRUE),
+         writprog = mean(writprog, na.rm = TRUE),
+         matprog = mean(matprog, na.rm = TRUE)) %>%
+  select(-academic_year, -filename) %>% 
+  distinct() %>% 
+  
   # rearrange columns
   select(lea,
          urn,

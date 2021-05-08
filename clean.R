@@ -63,10 +63,4 @@ c_ks2 <-
          laestab = as.numeric(paste0(lea,estab))) %>% 
   
   # extract academic year from filename
-  mutate(academic_year = str_extract(filename, "\\d{4}-\\d{4}")) %>% 
-  
-  # summarise progress scores as average of the three academic years
-  group_by(urn, lea, estab, dfe_number, laestab, schname) %>% 
-  summarise(readprog = mean(readprog, na.rm = TRUE),
-            writprog = mean(writprog, na.rm = TRUE),
-            matprog = mean(matprog, na.rm = TRUE))
+  mutate(academic_year = str_extract(filename, "\\d{4}-\\d{4}"))

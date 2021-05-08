@@ -47,6 +47,21 @@ Each of the subfolders above contains additional details about the contents of t
 ### schools.Rproj
 The R Project file for this analysis.
 
+### read.R
+R script file to read in the raw data (from the data-in directory).
+
+### clean.R
+R script file to clean the raw data. Selects required columns and renames columns for brevity, removes unwanted rows.
+
+### eda.R
+R script file for exploratory data analysis. Used to get to know the contents of the raw data better whilst cleaning it.
+
+### performance.R
+R script file to prepare the data for analysis of primary school KS2 performance. Summarises ks2 performance data to report a single average score for the 3 years of data collected.
+
+### rda
+Contains saved rda files.
+
 ## Sources and Credits
 * Find and compare schools in England (<https://www.gov.uk/school-performance-tables>)
 * Get information about schools (<https://get-information-schools.service.gov.uk/>)
