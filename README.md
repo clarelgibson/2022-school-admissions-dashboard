@@ -55,6 +55,9 @@ R script file to clean the raw data. Selects required columns and renames column
 ### eda.R
 R script file for exploratory data analysis. Used to get to know the contents of the raw data better whilst cleaning it.
 
+### offers_la.R
+R script file to prepare and export the data for analysis of school offers by local authority.
+
 ### performance.R
 R script file to prepare the data for analysis of primary school KS2 performance. Summarises ks2 performance data to report a single average score for the 3 years of data collected.
 

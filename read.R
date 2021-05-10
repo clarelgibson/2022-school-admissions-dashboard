@@ -7,6 +7,10 @@
 # Libraries----
 library(tidyverse)
 
+# Offers by LA
+r_offers_la <- 
+  read_csv("data-in/AppsandOffers_2020.csv")
+
 # Info
 r_info <- 
   read_csv("data-in/2021-05-07_850_936_gias.csv")
