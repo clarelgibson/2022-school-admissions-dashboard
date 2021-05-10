@@ -8,6 +8,11 @@ This repo contains data and analysis relating to primary school admission and pe
 ### data-in
 Contains the raw data used for the analysis. Note that due to the current COVID-19 pandemic, the UK Government is not publishing any data relating to school performance for 2020 and it is unlikely to do so for 2021. At the time of writing, this means that the most recent academic year for which performance data is available is 2018-2019.
 
+#### Apps and Offers
+* AppsandOffers_2020.csv
+
+This file contains statistics relating to the number of offers made to applicants for secondary and primary school places for academic years from 2014-2015 through to 2020-2021, and the proportion which received preferred offers. I downloaded this file from the [UK Government Explore Education Statistics service][4].
+
 #### KS2 Performance
 
 * 2016-2017_850_ks2final.csv
@@ -36,13 +41,7 @@ The file above contains additional data relating to primary schools in Hampshire
 3. On the next page I opted to choose a specific set of data and entered the following fields: DistrictAdministrative(name), EstablishmentNumber, EstablishmentName, EstablishmentTypeGroup(name), LA(code), OfstedRating(name), PercentageFSM, PhaseOfEducation(name), ReligiousCharacter(name), URN
 
 ### ref
-Contains reference materials related to this analysis.
-
-* 2016-2017
-* 2017-2018
-* 2018-2019
-
-Each of the subfolders above contains additional details about the contents of the raw data csv files in the **data-in** folder. Further information and definitions of commonly used terms in the field of education performance measures can be found on the [GIAS glossary page][3].
+Contains reference materials related to this analysis. Each file in this directory contains additional details about the contents of the raw data csv files in the **data-in** folder. Further information and definitions of commonly used terms in the field of education performance measures can be found on the [GIAS glossary page][3].
 
 ### schools.Rproj
 The R Project file for this analysis.
@@ -65,7 +64,9 @@ Contains saved rda files.
 ## Sources and Credits
 * Find and compare schools in England (<https://www.gov.uk/school-performance-tables>)
 * Get information about schools (<https://get-information-schools.service.gov.uk/>)
+* Explore education statistics (<https://explore-education-statistics.service.gov.uk/>)
 
 [1]: <https://www.compare-school-performance.service.gov.uk/download-data> "School performance download service"
 [2]: <https://get-information-schools.service.gov.uk/> "Get information about schools"
 [3]: <https://get-information-schools.service.gov.uk/glossary> "GIAS glossary"
+[4]: <https://explore-education-statistics.service.gov.uk/find-statistics/secondary-and-primary-school-applications-and-offers#dataDownloads-1> "Applications and Offers"
