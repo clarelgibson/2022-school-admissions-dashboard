@@ -45,3 +45,6 @@ f_performance <-
 
 # Save rda file
 save(f_performance, file = "rda/f_performance.rda")
+
+# Write CSV file
+write_csv(f_performance, "data-out/performance.csv", na = "")
