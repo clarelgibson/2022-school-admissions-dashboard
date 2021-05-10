@@ -11,4 +11,4 @@ library(tidyverse)
 f_offers_la <- r_offers_la
 
 # Write CSV file
-write_csv(f_offers_la, "data-out/offers_la.csv")
+write_csv(f_offers_la, "data-out/offers_la.csv", na = "")
