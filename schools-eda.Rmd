@@ -3,29 +3,86 @@ title: "Surrey/Hants Primary School Admissions and Performance"
 subtitle: "Exploratory Data Analysis"
 author: "Clare Gibson"
 date: "`r Sys.Date()`"
-output: github_document
+output: 
+  html_document:
+    toc: true
+    number_sections: true
+    toc_float: true
+    theme: cosmo
+    code_folding: show
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## R Markdown
+# Introduction
+This document forms part of a project I am working on to analyse and present primary school admissions and performance data in Surrey and Hampshire in a meaningful way to parents looking to choose a school for their child. The full projects, including all source data and scripts, can be found on [Github][1].
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+This project contains data and analysis relating to primary school admissions and performance data in Surrey and Hampshire for academic years beginning September 2016. Full details of the data sources used for this analysis can be found in the [README][2] file within the Github repo.
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+The purpose of this exploratory data analysis (EDA) is to get to know the data, determine what level of cleaning or wrangling may be required and uncover potential insights to explore further.
 
-```{r cars}
-summary(cars)
+We will make use of several libraries during this EDA:
+```{r libraries, message=FALSE, warning=FALSE}
+library(tidyverse)
+library(janitor)
 ```
 
-## Including Plots
 
-You can also embed plots, for example:
+# Setup
+First we need to run the `read.R` script to read in the source data for this project. Source data files can be found in the `data-in` directory of this repo.
 
-```{r pressure, echo=FALSE}
-plot(pressure)
+```{r read, warning=FALSE, message=FALSE}
+source("read.R")
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+The `read.R` script has loaded three data frames into our working environment:
+
+* `r_info` contains some demographic and other categorical information about each primary school.
+* `r_ks2` contains historical Key Stage 2 performance data for each primary school.
+* `r_offers_la` contains statistics relating to the number of offers made to applicants for academic years from 2014-2015 through to 2020-2021. It is aggregated at the local authority (LA) level of detail.
+
+You will notice that each of these data frames has the prefix `r_` at the start of the variable name. This denotes the variable as being the 'raw' version of the data (i.e. exactly as it appeared at source). When we start to clean and wrangle this data, we will store the manipulated version as a new variable, without the `r_` prefix. In this way, we always have a copy of the raw data to refer back to if needed.
+
+# School offers
+We will start this EDA by examining the `r_offers_la` data. Let's view a summary of this data frame.
+
+```{r offers-glimpse}
+glimpse(r_offers_la)
+```
+
+The first thing I like to do after reading in data in its raw form is to clean the column headings so that they are in a friendly format for R. That means avoiding spaces and special characters and converting everything to lower case. In this case, the headings in the raw data are pretty clean already, but I can see one or two that have some capitalization. R has a handy package called `janitor` which includes a `clean_names()` function. We can use this function as the first step in cleaning this data. Since I am now manipulating the raw data, I will save these changes into a new variable called `offers_la` (removing the `r_` prefix).
+
+```{r offers-clean-names}
+offers_la <- r_offers_la %>% 
+  clean_names()
+```
+
+Looking again at the summary of the data, we can see that there is a column called `geographic_level`, which seems to indicate that the records may be at differing levels of granularity. In fact, we can see this is the case by looking at the unique values of `geographic_level`.
+
+```{r geographic-levels}
+table(offers_la$geographic_level)
+```
+
+The records denoted as either 'National' or 'Regional' in this column are simply rolled-up subtotals of the 'Local authority' records. This is essentially capturing the same data twice, and could cause us issues if we want to perform calculations across the entire data frame. Given that we can easily calculate subtotals ourselves if needed, we will remove these records for our clean data frame.
+
+```{r offers-filter-geo}
+offers_la <- offers_la %>% 
+  filter(geographic_level == "Local authority")
+```
+
+I also noticed a few more items I would like to clean up. First, I would like to mutate the `time_period` column so that it displays only the start year of the academic year (i.e. '202021' becomes '2020'. We can also rename it to `year_of_entry` for clarity).
+
+```{r offers-year-of-entry}
+offers_la <- offers_la %>% 
+  mutate(time_period = as.character(time_period),
+         time_period = str_sub(time_period, 1, 4),
+         time_period = as.numeric(time_period)) %>% 
+  rename(year_of_entry = time_period)
+
+head(offers_la$year_of_entry)
+```
+
+[1]: <https://github.com/clarelgibson/schools> "Github repo"
+[2]: <https://github.com/clarelgibson/schools#readme> "README"
