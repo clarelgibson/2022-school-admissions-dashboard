@@ -45,6 +45,7 @@ c_ks2 <-
          lea,
          estab,
          schname,
+         totpups,
          readprog,
          writprog,
          matprog) %>% 
@@ -53,6 +54,7 @@ c_ks2 <-
   mutate(across(c("lea",
                   "urn",
                   "estab",
+                  "totpups",
                   "readprog",
                   "writprog",
                   "matprog"),
@@ -62,5 +64,38 @@ c_ks2 <-
   mutate(dfe_number = paste0(lea,"/",estab),
          laestab = as.numeric(paste0(lea,estab))) %>% 
   
-  # extract academic year from filename
-  mutate(academic_year = str_extract(filename, "\\d{4}-\\d{4}"))
+  # extract academic year from filename and remove filename
+  mutate(academic_year = str_extract(filename, "\\d{4}-\\d{4}")) %>% 
+  select(-filename)
+
+# Offers
+c_offers_la <-  
+  r_offers_la %>% 
+  
+  # Clean column names
+  clean_names() %>% 
+  
+  # Remove rows that are not local authority (these are just rolled up totals)
+  filter(geographic_level == "Local authority") %>% 
+  
+  # Select columns to keep
+  select(!c(time_identifier,
+            geographic_level,
+            country_code,
+            country_name,
+            region_code,
+            region_name,
+            new_la_code)) %>% 
+  
+  # rename columns for consistency with performance data set
+  rename(academic_year = time_period,
+         lea = old_la_code,
+         education_phase = school_phase) %>% 
+  
+  # reformat academic_year for consistency with performance data set
+  mutate(academic_year = paste0(str_sub(academic_year,1,4),
+                                "-20",
+                                str_sub(academic_year,5,6))) %>% 
+  
+  # convert no_of_preferences to numeric
+  mutate(no_of_preferences = as.numeric(no_of_preferences))
