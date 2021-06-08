@@ -46,6 +46,8 @@ The `read.R` script has loaded three data frames into our working environment:
 You will notice that each of these data frames has the prefix `r_` at the start of the variable name. This denotes the variable as being the 'raw' version of the data (i.e. exactly as it appeared at source). When we start to clean and wrangle this data, we will store the manipulated version as a new variable, without the `r_` prefix. In this way, we always have a copy of the raw data to refer back to if needed.
 
 # School offers
+
+## Cleaning
 We will start this EDA by examining the `r_offers_la` data. Let's view a summary of this data frame.
 
 ```{r offers-glimpse}
@@ -61,7 +63,7 @@ offers_la <- r_offers_la %>%
 
 Looking again at the summary of the data, we can see that there is a column called `geographic_level`, which seems to indicate that the records may be at differing levels of granularity. In fact, we can see this is the case by looking at the unique values of `geographic_level`.
 
-```{r geographic-levels}
+```{r offers-geographic-levels}
 table(offers_la$geographic_level)
 ```
 
@@ -72,7 +74,17 @@ offers_la <- offers_la %>%
   filter(geographic_level == "Local authority")
 ```
 
-I also noticed a few more items I would like to clean up. First, I would like to mutate the `time_period` column so that it displays only the start year of the academic year (i.e. '202021' becomes '2020'. We can also rename it to `year_of_entry` for clarity).
+Once I have clean column headings and the data is filtered, the next thing I like to do is to view the unique values of each character-type column. This helps me get a feel for the categories that our data is divided into. It can also help reveal if there is any data cleaning required. I'll save the unique values into a new df with the prefix `u_` (for 'unique').
+
+```{r offers-unique-vals}
+u_offers_la <- offers_la %>% 
+  select(where(is.character)) %>% 
+  lapply(unique)
+
+u_offers_la
+```
+
+I notice a few items that I would like to clean up. First, I would like to mutate the `time_period` column (a numeric column in `offers_la`) so that it displays only the start year of the academic year (i.e. '202021' becomes '2020'. We can also rename it to `year_of_entry` for clarity).
 
 ```{r offers-year-of-entry}
 offers_la <- offers_la %>% 
@@ -83,6 +95,30 @@ offers_la <- offers_la %>%
 
 head(offers_la$year_of_entry)
 ```
+
+In the list of unique values `u_offers_la` I can see one column that appears to be of the wrong type. Look at `no_of_preferences`.
+
+```{r offers-head-nc-year}
+u_offers_la$no_of_preferences
+```
+
+This is a character column but the values are all numbers. I think this is because before we filtered the data to remove the regional and national totals, this column contained some character values denoting missing values. Now that we have filtered those records out, we can safely convert this column to numeric type.
+
+```{r offers-pref-type}
+offers_la <- offers_la %>% 
+  mutate(no_of_preferences = as.numeric(no_of_preferences))
+
+glimpse(offers_la$no_of_preferences)
+```
+
+## Exploring
+Now we have a clean data frame for the offers by local authority, we can start to explore the data. The records in this data frame each represent data for a particular local authority for a particular year of entry for either primary or secondary submissions. Let's see what the data looks like for Surrey and Hampshire.
+
+```{r offers-surrey-p}
+ggplot(offers_la) +
+  geom_point(mapping = aes(x = applications_received, y = admission_numbers))
+```
+
 
 [1]: <https://github.com/clarelgibson/schools> "Github repo"
 [2]: <https://github.com/clarelgibson/schools#readme> "README"

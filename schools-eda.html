@@ -11,7 +11,7 @@
 
 <meta name="author" content="Clare Gibson" />
 
-<meta name="date" content="2021-06-04" />
+<meta name="date" content="2021-06-06" />
 
 <title>Surrey/Hants Primary School Admissions and Performance</title>
 
@@ -256,7 +256,7 @@ div.tocify {
 <h1 class="title toc-ignore">Surrey/Hants Primary School Admissions and Performance</h1>
 <h3 class="subtitle">Exploratory Data Analysis</h3>
 <h4 class="author">Clare Gibson</h4>
-<h4 class="date">2021-06-04</h4>
+<h4 class="date">2021-06-06</h4>
 
 </div>
 
@@ -284,6 +284,8 @@ library(janitor)</code></pre>
 </div>
 <div id="school-offers" class="section level1" number="3">
 <h1 number="3"><span class="header-section-number">3</span> School offers</h1>
+<div id="cleaning" class="section level2" number="3.1">
+<h2 number="3.1"><span class="header-section-number">3.1</span> Cleaning</h2>
 <p>We will start this EDA by examining the <code>r_offers_la</code> data. Let’s view a summary of this data frame.</p>
 <pre class="r"><code>glimpse(r_offers_la)</code></pre>
 <pre><code>## Rows: 2,266
@@ -335,7 +337,150 @@ library(janitor)</code></pre>
 <p>The records denoted as either ‘National’ or ‘Regional’ in this column are simply rolled-up subtotals of the ‘Local authority’ records. This is essentially capturing the same data twice, and could cause us issues if we want to perform calculations across the entire data frame. Given that we can easily calculate subtotals ourselves if needed, we will remove these records for our clean data frame.</p>
 <pre class="r"><code>offers_la &lt;- offers_la %&gt;% 
   filter(geographic_level == &quot;Local authority&quot;)</code></pre>
-<p>I also noticed a few more items I would like to clean up. First, I would like to mutate the <code>time_period</code> column so that it displays only the start year of the academic year (i.e. ‘202021’ becomes ‘2020’. We can also rename it to <code>year_of_entry</code> for clarity).</p>
+<p>Once I have clean column headings and the data is filtered, the next thing I like to do is to view the unique values of each character-type column. This helps me get a feel for the categories that our data is divided into. It can also help reveal if there is any data cleaning required. I’ll save the unique values into a new df with the prefix <code>u_</code> (for ‘unique’).</p>
+<pre class="r"><code>u_offers_la &lt;- offers_la %&gt;% 
+  select(where(is.character)) %&gt;% 
+  lapply(unique)
+
+u_offers_la</code></pre>
+<pre><code>## $time_identifier
+## [1] &quot;Academic year&quot;
+## 
+## $geographic_level
+## [1] &quot;Local authority&quot;
+## 
+## $country_code
+## [1] &quot;E92000001&quot;
+## 
+## $country_name
+## [1] &quot;England&quot;
+## 
+## $region_code
+## [1] &quot;E12000007&quot; &quot;E12000005&quot; &quot;E12000002&quot; &quot;E12000003&quot; &quot;E12000001&quot; &quot;E12000009&quot;
+## [7] &quot;E12000006&quot; &quot;E12000008&quot; &quot;E12000004&quot;
+## 
+## $region_name
+##  [1] &quot;INNER LONDON&quot;             &quot;OUTER LONDON&quot;            
+##  [3] &quot;WEST MIDLANDS&quot;            &quot;NORTH WEST&quot;              
+##  [5] &quot;YORKSHIRE AND THE HUMBER&quot; &quot;NORTH EAST&quot;              
+##  [7] &quot;SOUTH WEST&quot;               &quot;EAST OF ENGLAND&quot;         
+##  [9] &quot;SOUTH EAST&quot;               &quot;EAST MIDLANDS&quot;           
+## 
+## $new_la_code
+##   [1] &quot;E09000001&quot; &quot;E09000007&quot; &quot;E09000011&quot; &quot;E09000012&quot; &quot;E09000013&quot; &quot;E09000019&quot;
+##   [7] &quot;E09000020&quot; &quot;E09000022&quot; &quot;E09000023&quot; &quot;E09000028&quot; &quot;E09000030&quot; &quot;E09000032&quot;
+##  [13] &quot;E09000033&quot; &quot;E09000002&quot; &quot;E09000003&quot; &quot;E09000004&quot; &quot;E09000005&quot; &quot;E09000006&quot;
+##  [19] &quot;E09000008&quot; &quot;E09000009&quot; &quot;E09000010&quot; &quot;E09000014&quot; &quot;E09000015&quot; &quot;E09000016&quot;
+##  [25] &quot;E09000017&quot; &quot;E09000018&quot; &quot;E09000021&quot; &quot;E09000024&quot; &quot;E09000025&quot; &quot;E09000026&quot;
+##  [31] &quot;E09000027&quot; &quot;E09000029&quot; &quot;E09000031&quot; &quot;E08000025&quot; &quot;E08000026&quot; &quot;E08000027&quot;
+##  [37] &quot;E08000028&quot; &quot;E08000029&quot; &quot;E08000030&quot; &quot;E08000031&quot; &quot;E08000011&quot; &quot;E08000012&quot;
+##  [43] &quot;E08000013&quot; &quot;E08000014&quot; &quot;E08000015&quot; &quot;E08000001&quot; &quot;E08000002&quot; &quot;E08000003&quot;
+##  [49] &quot;E08000004&quot; &quot;E08000005&quot; &quot;E08000006&quot; &quot;E08000007&quot; &quot;E08000008&quot; &quot;E08000009&quot;
+##  [55] &quot;E08000010&quot; &quot;E08000016&quot; &quot;E08000017&quot; &quot;E08000018&quot; &quot;E08000019&quot; &quot;E08000032&quot;
+##  [61] &quot;E08000033&quot; &quot;E08000034&quot; &quot;E08000035&quot; &quot;E08000036&quot; &quot;E08000020&quot; &quot;E08000021&quot;
+##  [67] &quot;E08000022&quot; &quot;E08000023&quot; &quot;E08000024&quot; &quot;E06000022&quot; &quot;E06000023&quot; &quot;E06000024&quot;
+##  [73] &quot;E06000025&quot; &quot;E06000001&quot; &quot;E06000002&quot; &quot;E06000003&quot; &quot;E06000004&quot; &quot;E06000010&quot;
+##  [79] &quot;E06000011&quot; &quot;E06000012&quot; &quot;E06000013&quot; &quot;E10000023&quot; &quot;E06000014&quot; &quot;E06000032&quot;
+##  [85] &quot;E06000055&quot; &quot;E06000056&quot; &quot;E10000002&quot; &quot;E06000042&quot; &quot;E10000007&quot; &quot;E06000015&quot;
+##  [91] &quot;E10000009&quot; &quot;E06000029&quot; &quot;E06000047&quot; &quot;E06000005&quot; &quot;E10000011&quot; &quot;E06000043&quot;
+##  [97] &quot;E10000014&quot; &quot;E06000044&quot; &quot;E06000045&quot; &quot;E10000018&quot; &quot;E06000016&quot; &quot;E06000017&quot;
+## [103] &quot;E10000028&quot; &quot;E06000021&quot; &quot;E06000054&quot; &quot;E06000030&quot; &quot;E06000036&quot; &quot;E06000040&quot;
+## [109] &quot;E06000037&quot; &quot;E06000038&quot; &quot;E06000039&quot; &quot;E06000041&quot; &quot;E10000003&quot; &quot;E06000031&quot;
+## [115] &quot;E06000006&quot; &quot;E06000007&quot; &quot;E10000008&quot; &quot;E06000026&quot; &quot;E06000027&quot; &quot;E10000012&quot;
+## [121] &quot;E06000033&quot; &quot;E06000034&quot; &quot;E06000019&quot; &quot;E10000034&quot; &quot;E10000016&quot; &quot;E06000035&quot;
+## [127] &quot;E10000017&quot; &quot;E06000008&quot; &quot;E06000009&quot; &quot;E10000024&quot; &quot;E06000018&quot; &quot;E06000051&quot;
+## [133] &quot;E06000020&quot; &quot;E06000049&quot; &quot;E06000050&quot; &quot;E06000052&quot; &quot;E10000006&quot; &quot;E10000013&quot;
+## [139] &quot;E10000015&quot; &quot;E06000046&quot; &quot;E10000019&quot; &quot;E10000020&quot; &quot;E10000021&quot; &quot;E06000048&quot;
+## [145] &quot;E10000025&quot; &quot;E10000027&quot; &quot;E10000029&quot; &quot;E10000030&quot; &quot;E10000031&quot; &quot;E10000032&quot;
+## [151] &quot;E06000028&quot;
+## 
+## $la_name
+##   [1] &quot;City of London&quot;                     &quot;Camden&quot;                            
+##   [3] &quot;Greenwich&quot;                          &quot;Hackney&quot;                           
+##   [5] &quot;Hammersmith and Fulham&quot;             &quot;Islington&quot;                         
+##   [7] &quot;Kensington and Chelsea&quot;             &quot;Lambeth&quot;                           
+##   [9] &quot;Lewisham&quot;                           &quot;Southwark&quot;                         
+##  [11] &quot;Tower Hamlets&quot;                      &quot;Wandsworth&quot;                        
+##  [13] &quot;Westminster&quot;                        &quot;Barking and Dagenham&quot;              
+##  [15] &quot;Barnet&quot;                             &quot;Bexley&quot;                            
+##  [17] &quot;Brent&quot;                              &quot;Bromley&quot;                           
+##  [19] &quot;Croydon&quot;                            &quot;Ealing&quot;                            
+##  [21] &quot;Enfield&quot;                            &quot;Haringey&quot;                          
+##  [23] &quot;Harrow&quot;                             &quot;Havering&quot;                          
+##  [25] &quot;Hillingdon&quot;                         &quot;Hounslow&quot;                          
+##  [27] &quot;Kingston upon Thames&quot;               &quot;Merton&quot;                            
+##  [29] &quot;Newham&quot;                             &quot;Redbridge&quot;                         
+##  [31] &quot;Richmond upon Thames&quot;               &quot;Sutton&quot;                            
+##  [33] &quot;Waltham Forest&quot;                     &quot;Birmingham&quot;                        
+##  [35] &quot;Coventry&quot;                           &quot;Dudley&quot;                            
+##  [37] &quot;Sandwell&quot;                           &quot;Solihull&quot;                          
+##  [39] &quot;Walsall&quot;                            &quot;Wolverhampton&quot;                     
+##  [41] &quot;Knowsley&quot;                           &quot;Liverpool&quot;                         
+##  [43] &quot;St. Helens&quot;                         &quot;Sefton&quot;                            
+##  [45] &quot;Wirral&quot;                             &quot;Bolton&quot;                            
+##  [47] &quot;Bury&quot;                               &quot;Manchester&quot;                        
+##  [49] &quot;Oldham&quot;                             &quot;Rochdale&quot;                          
+##  [51] &quot;Salford&quot;                            &quot;Stockport&quot;                         
+##  [53] &quot;Tameside&quot;                           &quot;Trafford&quot;                          
+##  [55] &quot;Wigan&quot;                              &quot;Barnsley&quot;                          
+##  [57] &quot;Doncaster&quot;                          &quot;Rotherham&quot;                         
+##  [59] &quot;Sheffield&quot;                          &quot;Bradford&quot;                          
+##  [61] &quot;Calderdale&quot;                         &quot;Kirklees&quot;                          
+##  [63] &quot;Leeds&quot;                              &quot;Wakefield&quot;                         
+##  [65] &quot;Gateshead&quot;                          &quot;Newcastle upon Tyne&quot;               
+##  [67] &quot;North Tyneside&quot;                     &quot;South Tyneside&quot;                    
+##  [69] &quot;Sunderland&quot;                         &quot;Bath and North East Somerset&quot;      
+##  [71] &quot;Bristol, City of&quot;                   &quot;North Somerset&quot;                    
+##  [73] &quot;South Gloucestershire&quot;              &quot;Hartlepool&quot;                        
+##  [75] &quot;Middlesbrough&quot;                      &quot;Redcar and Cleveland&quot;              
+##  [77] &quot;Stockton-on-Tees&quot;                   &quot;Kingston Upon Hull, City of&quot;       
+##  [79] &quot;East Riding of Yorkshire&quot;           &quot;North East Lincolnshire&quot;           
+##  [81] &quot;North Lincolnshire&quot;                 &quot;North Yorkshire&quot;                   
+##  [83] &quot;York&quot;                               &quot;Luton&quot;                             
+##  [85] &quot;Bedford&quot;                            &quot;Central Bedfordshire&quot;              
+##  [87] &quot;Buckinghamshire&quot;                    &quot;Milton Keynes&quot;                     
+##  [89] &quot;Derbyshire&quot;                         &quot;Derby&quot;                             
+##  [91] &quot;Dorset&quot;                             &quot;Bournemouth Christchurch and Poole&quot;
+##  [93] &quot;Durham&quot;                             &quot;Darlington&quot;                        
+##  [95] &quot;East Sussex&quot;                        &quot;Brighton and Hove&quot;                 
+##  [97] &quot;Hampshire&quot;                          &quot;Portsmouth&quot;                        
+##  [99] &quot;Southampton&quot;                        &quot;Leicestershire&quot;                    
+## [101] &quot;Leicester&quot;                          &quot;Rutland&quot;                           
+## [103] &quot;Staffordshire&quot;                      &quot;Stoke-on-Trent&quot;                    
+## [105] &quot;Wiltshire&quot;                          &quot;Swindon&quot;                           
+## [107] &quot;Bracknell Forest&quot;                   &quot;Windsor and Maidenhead&quot;            
+## [109] &quot;West Berkshire&quot;                     &quot;Reading&quot;                           
+## [111] &quot;Slough&quot;                             &quot;Wokingham&quot;                         
+## [113] &quot;Cambridgeshire&quot;                     &quot;Peterborough&quot;                      
+## [115] &quot;Halton&quot;                             &quot;Warrington&quot;                        
+## [117] &quot;Devon&quot;                              &quot;Plymouth&quot;                          
+## [119] &quot;Torbay&quot;                             &quot;Essex&quot;                             
+## [121] &quot;Southend-on-Sea&quot;                    &quot;Thurrock&quot;                          
+## [123] &quot;Herefordshire&quot;                      &quot;Worcestershire&quot;                    
+## [125] &quot;Kent&quot;                               &quot;Medway&quot;                            
+## [127] &quot;Lancashire&quot;                         &quot;Blackburn with Darwen&quot;             
+## [129] &quot;Blackpool&quot;                          &quot;Nottinghamshire&quot;                   
+## [131] &quot;Nottingham&quot;                         &quot;Shropshire&quot;                        
+## [133] &quot;Telford and Wrekin&quot;                 &quot;Cheshire East&quot;                     
+## [135] &quot;Cheshire West and Chester&quot;          &quot;Cornwall&quot;                          
+## [137] &quot;Cumbria&quot;                            &quot;Gloucestershire&quot;                   
+## [139] &quot;Hertfordshire&quot;                      &quot;Isle of Wight&quot;                     
+## [141] &quot;Lincolnshire&quot;                       &quot;Norfolk&quot;                           
+## [143] &quot;Northamptonshire&quot;                   &quot;Northumberland&quot;                    
+## [145] &quot;Oxfordshire&quot;                        &quot;Somerset&quot;                          
+## [147] &quot;Suffolk&quot;                            &quot;Surrey&quot;                            
+## [149] &quot;Warwickshire&quot;                       &quot;West Sussex&quot;                       
+## [151] &quot;Poole&quot;                              &quot;Bournemouth&quot;                       
+## 
+## $school_phase
+## [1] &quot;Primary&quot;   &quot;Secondary&quot;
+## 
+## $nc_year_admission
+## [1] &quot;R&quot; &quot;7&quot; &quot;9&quot;
+## 
+## $no_of_preferences
+## [1] &quot;6&quot; &quot;3&quot; &quot;5&quot; &quot;4&quot;</code></pre>
+<p>I notice a few items that I would like to clean up. First, I would like to mutate the <code>time_period</code> column (a numeric column in <code>offers_la</code>) so that it displays only the start year of the academic year (i.e. ‘202021’ becomes ‘2020’. We can also rename it to <code>year_of_entry</code> for clarity).</p>
 <pre class="r"><code>offers_la &lt;- offers_la %&gt;% 
   mutate(time_period = as.character(time_period),
          time_period = str_sub(time_period, 1, 4),
@@ -344,6 +489,20 @@ library(janitor)</code></pre>
 
 head(offers_la$year_of_entry)</code></pre>
 <pre><code>## [1] 2020 2020 2020 2020 2020 2020</code></pre>
+<p>In the list of unique values <code>u_offers_la</code> I can see one column that appears to be of the wrong type. Look at <code>no_of_preferences</code>.</p>
+<pre class="r"><code>u_offers_la$no_of_preferences</code></pre>
+<pre><code>## [1] &quot;6&quot; &quot;3&quot; &quot;5&quot; &quot;4&quot;</code></pre>
+<p>This is a character column but the values are all numbers. I think this is because before we filtered the data to remove the regional and national totals, this column contained some character values denoting missing values. Now that we have filtered those records out, we can safely convert this column to numeric type.</p>
+<pre class="r"><code>offers_la &lt;- offers_la %&gt;% 
+  mutate(no_of_preferences = as.numeric(no_of_preferences))
+
+glimpse(offers_la$no_of_preferences)</code></pre>
+<pre><code>##  num [1:2112] 6 6 6 6 6 6 6 6 6 6 ...</code></pre>
+</div>
+<div id="exploring" class="section level2" number="3.2">
+<h2 number="3.2"><span class="header-section-number">3.2</span> Exploring</h2>
+<p>Now we have a clean data frame for the offers by Local Authority, we can start to explore the data. Let’s find out how the records in this data frame are organised. What does each record represent? To find this out, we need to know what makes each record unique. In other words, which column or combination of columns contains entirely unique values.</p>
+</div>
 </div>
 
 
