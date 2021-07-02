@@ -111,6 +111,25 @@ offers_la <- offers_la %>%
 glimpse(offers_la$no_of_preferences)
 ```
 
+Another thing I noticed when I first reviewed the data with `glimpse` was that there are columns containing percentages where the values follow the format `97.6`, `88.3`, `3.2` etc.
+
+```{r offers-percent}
+offers_la %>% 
+  select(ends_with("_percent")) %>% 
+  head()
+```
+
+I would like to convert these to decimals (i.e. divide each value by 100) to make it easier to work with in Tableau later.
+
+```{r offers-percent-convert}
+offers_la <- offers_la %>% 
+  mutate(across(ends_with("_percent"), ~ .x / 100))
+
+offers_la %>% 
+  select(ends_with("_percent")) %>% 
+  head()
+```
+
 ## Exploring
 Now we have a clean data frame for the offers by local authority, we can start to explore the data. The records in this data frame each represent data for a particular local authority for a particular year of entry for either primary or secondary submissions. Let's see what the data looks like for Surrey and Hampshire.
 
