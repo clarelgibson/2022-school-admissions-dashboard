@@ -1,0 +1,88 @@
+---
+title: "Analysis of Primary School Applications and Offers in Surrey and Hampshire Since 2014"
+subtitle: "Schools Data Analysis"
+author: "Clare Gibson"
+date: "`r Sys.Date()`"
+output: 
+  html_document:
+    toc: true
+    number_sections: true
+    toc_float: true
+    theme: cosmo
+    code_folding: show
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Introduction
+This document forms part of a project I am working on to analyse and present primary school admissions and performance data in Surrey and Hampshire in a meaningful way to parents looking to choose a school for their child. The full project, including all source data and scripts, can be found on [Github][1].
+
+## Data Overview
+In this analysis, I will explore data relating to primary school admissions in Surrey and Hampshire for academic years beginning September 2014. The data was taken from the [UK Government Explore Education Statistics service][4] and contains public sector information licensed under the [Open Government Licence v3.0][5]. Full details of the data sources used for this analysis can be found in the [README][2] file within the Github repo.
+
+The CSV dataset is located [here][3].
+
+The dataset includes the number of offers made to applicants for both primary and secondary school places to start in September 2021, methods of application and the proportion who received preferred offers of various type. A time series is included going back to 2014, when primary data was collected for the first time following the introduction of the first primary national offer day.
+
+While the dataset does include data for both primary and secondary applications, and for every local authority in England, my analysis will focus on primary applications in Surrey and Hampshire.
+
+Variable names and descriptions for this file are provided below:
+
+|Variable name	|Variable description
+|:---           |:---
+|admission_numbers	|Number of admission places available
+|applications_received	|Number of applications received
+|first_preference_offers	|a. Number of first preference offers
+|first_preference_offers_percent	|b. First preference rate
+|NC_year_admission	|Year of admission
+|no_of_preferences	|Number of preferences allowed
+|no_offer	|m. Number made no offer
+|no_offer_percent	|n. No offer rate
+|non_preferred_offer	|k. Number of non preferred offers
+|non_preferred_offer_percent	|l. Non preferred offer rate
+|offers_to_nonapplicants	|Total number of offers to non applicants
+|one_of_the_three_preference_offers	|g. Number of top three preference offers
+|one_of_the_three_preference_offers_percent	|h. Top three preference rate
+|online_applications	|Number of applications submitted online
+|online_apps_percent	|Percentage of applications submitted online
+|preferred_school_offer	|i. Number of preferred offers
+|preferred_school_offer_percent	|j. Preferred offer rate
+|school_phase	|School phase - collection phase
+|schools_in_another_la_offer	|q. Number of offers in another LA
+|schools_in_another_la_offer_percent	|r. Other LA offer rate
+|schools_in_la_offer	|o. Number of offers in home LA
+|schools_in_la_offer_percent	|p. Home LA offer rate
+|second_preference_offers	|c. Number of second preference offers
+|second_preference_offers_percent	|d. Second preference rate
+|third_preference_offers	|e. Number of third preference offers
+|third_preference_offers_percent	|f. Third preference rate
+
+## R Setup
+I will make use of several libraries during this analysis:
+```{r libraries, message=FALSE, warning=FALSE}
+library(tidyverse)
+library(janitor)
+```
+
+# Questions
+I am primarily interested in answering the following questions with this data:
+
+* What proportion of applicants typically receive their first preference place across England as a whole?
+* What proportion of applicants typically receive any of their preferred places across England as a whole?
+* How do Surrey and Hampshire compare against the national (English) average for number of first preference and any preference places offered?
+* Has the number of applications in Surrey and Hampshire gone up or down since 2014?
+* Has the number of available places kept pace with the number of applications in Surrey and Hampshire since 2014?
+
+As I work through the data wrangling and exploration steps, I may uncover further questions that I wish to answer with this data.
+
+# Data Wrangling
+## Gather Data
+First we need to run the `read.R` script to read in the source data for this project. Source data files can be found in the `data-in` directory of this repo.
+
+[1]: <https://github.com/clarelgibson/schools> "Github repo"
+[2]: <https://github.com/clarelgibson/schools#readme> "README"
+[3]: <https://github.com/clarelgibson/schools/blob/2da3a0f15ed026f2d0d874eab3008b3653c4810b/data-in/AppsandOffers_2020.csv> "Admissions data"
+[4]: <https://explore-education-statistics.service.gov.uk/find-statistics/secondary-and-primary-school-applications-and-offers#dataDownloads-1> "Applications and Offers"
+[5]: <https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/> "OGL v3.0"
