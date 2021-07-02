@@ -9,7 +9,7 @@ library(tidyverse)
 
 # Offers by LA
 r_offers_la <- 
-  read_csv("data-in/AppsandOffers_2020.csv")
+  read_csv("data-in/appsandoffers_2021.csv")
 
 # Info
 r_info <- 
