@@ -9,9 +9,9 @@ This repo contains data and analysis relating to primary school admission and pe
 Contains the raw data used for the analysis. Note that due to the current COVID-19 pandemic, the UK Government is not publishing any data relating to school performance for 2020 and it is unlikely to do so for 2021. At the time of writing, this means that the most recent academic year for which performance data is available is 2018-2019.
 
 #### Apps and Offers
-* AppsandOffers_2020.csv
+* AppsandOffers_2021.csv
 
-This file contains statistics relating to the number of offers made to applicants for secondary and primary school places for academic years from 2014-2015 through to 2020-2021, and the proportion which received preferred offers. I downloaded this file from the [UK Government Explore Education Statistics service][4].
+This file contains statistics relating to the number of offers made to applicants for secondary and primary school places for academic years from 2014-2015 through to 2021-2022, and the proportion which received preferred offers. I downloaded this file from the [UK Government Explore Education Statistics service][4].
 
 #### KS2 Performance
 
