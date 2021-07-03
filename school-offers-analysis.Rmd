@@ -76,11 +76,12 @@ I am primarily interested in answering the following questions with this data:
 * How do Surrey and Hampshire compare against the national (English) average for number of first preference and any preference places offered?
 * Has the number of applications in Surrey and Hampshire gone up or down since 2014?
 * Has the number of available places kept pace with the number of applications in Surrey and Hampshire since 2014?
+* Is there any relationship between the rate of online applications and the rate of first preference offers?
 
 As I work through the data wrangling and exploration steps, I may uncover further questions that I wish to answer with this data.
 
 # Data Wrangling
-## Gather Data
+## Gather
 First I need to read in the data from the [CSV file][3] so that I can explore, clean and analyse it further.
 ```{r read-offers}
 r_offers_la <- read_csv("data-in/appsandoffers_2021.csv")
@@ -119,6 +120,105 @@ From the material that accompanied the data in its [original source location][6]
 >`r tufte::quote_footer('From [Explore Education Statistics][6] website')`
 
 The suppressed values have been read into the R dataframe as null values (`NA`). As I work through the analysis I will need to decide if and how to impute these missing values.
+
+## Assess
+Now that I have read the data into R, I can spend some time assessing it to find out what the features look like and what might need to be cleaned.
+
+I'll start by looking at a summary of the numerical columns of the dataset.
+
+```{r offers-summary-num}
+r_offers_la %>% 
+  select(where(is.numeric)) %>% 
+  summary()
+```
+
+From the summary I observe the following:
+
+* The `timeperiod` column denotes an academic year, but is in the format '202021'. I would like to mutate this numeric column (a numeric column so that it displays only the start year of the academic year (i.e. '202021' becomes '2020'. I could also rename it to `year_of_entry` for clarity).
+* The `old_la_code` column contains a categorical variable rather than a true numerical measure, and could benefit from being converted to a string.
+* Several of the columns show a large difference between the mean and the median. Looking at the description of the dataset on the [source website][4], I see that it states: "Figures are provided at national, regional and local authority level." This means that there are some records that display an aggregation of other records within the dataset. To help my analysis, I will remove these aggregated records (I can easily recreate the aggregations from the remaining granular data if needed).
+* As mentioned earlier, some of the columns have missing data and I will need to decide the best way to handle these missing values for my analyses.
+* `online_apps_percent` has a large range (min: 0.06%, max: 100%). It might be interesting to see how this measure varies by local authority or over time.
+* The columns containing percentages follow the format `97.6`, `88.3`, `3.2` etc. I would like to convert these to decimals (i.e. divide each value by 100) to make it easier to work with later.
+
+I can also view a summary of the character columns.
+
+```{r offers-summary-char}
+r_offers_la %>% 
+  select(where(is.character)) %>% 
+  lapply(table)
+```
+
+From this I can make some further observations:
+
+* Several columns appear to be redundant as they contain only a single value. `time_identifer`, `country_code`, `country_name` can probably all be removed since they contain no useful information.
+* `NC_year_admission` and `no_of_preferences` both contain 'not applicable' values denoted by `:`. I believe these null values are tied to the records with the regional and national aggregated data and will therefore disappear when I remove those rows.
+* `no_of_preferences` would be better converted to a numeric column once the 'not applicable' records have been removed.
+
+## Clean
+I'll start by fixing the issues I uncovered during my initial assessment. I will save my changes into a new dataframe `offers_la` so that I have a copy of both the raw data and my edited version.
+
+```{r offers-convert-timeperiod-to-date}
+# convert the timeperiod column to year_of_entry
+offers_la <- r_offers_la %>% 
+  mutate(time_period = as.character(time_period),
+         time_period = str_sub(time_period, 1, 4),
+         time_period = as.numeric(time_period)) %>% 
+  rename(year_of_entry = time_period)
+
+head(offers_la$year_of_entry)
+```
+
+```{r offers-convert-old-la-code-to-char}
+# convert the old_la_code column to character
+offers_la <- offers_la %>% 
+  mutate(old_la_code = as.character(old_la_code))
+
+tail(offers_la$old_la_code)
+```
+
+```{r offers-remove-agg-records}
+# remove the aggregated data
+offers_la <- offers_la %>% 
+  filter(geographic_level == "Local authority")
+```
+
+```{r offers-convert-percentages}
+# convert percentages to decimal
+offers_la <- offers_la %>% 
+  mutate(across(ends_with("_percent"), ~ .x / 100))
+
+offers_la %>% 
+  select(ends_with("_percent")) %>% 
+  head()
+```
+
+```{r offers-remove-redundant-cols}
+# remove redundant columns
+offers_la <- offers_la %>% 
+  select(!c(time_identifier, country_code, country_name))
+```
+
+```{r offers-convert-no-pref-to-char}
+offers_la <- offers_la %>% 
+  mutate(no_of_preferences = as.numeric(no_of_preferences))
+```
+
+### Handling Missing Values
+I have several columns that contain missing values, and I need to decide if and how to impute these values. I'll start by inspecting the clean dataframe to find out where the missing values are located.
+
+```{r offers-location-of-missing-values}
+knitr::kable(colSums(is.na(offers_la)),
+             col.names = c("count_na"))
+```
+
+# Export Clean Data
+I will save my clean data to a new CSV file that I can use for visualization in Tableau.
+
+```{r offers-export-csv}
+write_csv(offers_la, file="data-out/offers-la.csv", na="")
+```
+
 
 [1]: <https://github.com/clarelgibson/schools> "Github repo"
 [2]: <https://github.com/clarelgibson/schools#readme> "README"

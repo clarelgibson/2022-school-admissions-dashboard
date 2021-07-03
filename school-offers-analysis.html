@@ -389,7 +389,6 @@ div.tocify {
 </tr>
 </tbody>
 </table>
-<p>Caption: Table 1: Variable names and descriptions in the Applications and Offers dataset</p>
 </div>
 <div id="r-setup" class="section level2" number="1.2">
 <h2 number="1.2"><span class="header-section-number">1.2</span> R Setup</h2>
@@ -407,13 +406,14 @@ library(janitor)</code></pre>
 <li>How do Surrey and Hampshire compare against the national (English) average for number of first preference and any preference places offered?</li>
 <li>Has the number of applications in Surrey and Hampshire gone up or down since 2014?</li>
 <li>Has the number of available places kept pace with the number of applications in Surrey and Hampshire since 2014?</li>
+<li>Is there any relationship between the rate of online applications and the rate of first preference offers?</li>
 </ul>
 <p>As I work through the data wrangling and exploration steps, I may uncover further questions that I wish to answer with this data.</p>
 </div>
 <div id="data-wrangling" class="section level1" number="3">
 <h1 number="3"><span class="header-section-number">3</span> Data Wrangling</h1>
-<div id="gather-data" class="section level2" number="3.1">
-<h2 number="3.1"><span class="header-section-number">3.1</span> Gather Data</h2>
+<div id="gather" class="section level2" number="3.1">
+<h2 number="3.1"><span class="header-section-number">3.1</span> Gather</h2>
 <p>First I need to read in the data from the <a href="https://github.com/clarelgibson/schools/blob/94a59bbf3c5a361a437e50ff88b34fc7d4dace09/data-in/appsandoffers_2021.csv" title="Admissions data">CSV file</a> so that I can explore, clean and analyse it further.</p>
 <pre class="r"><code>r_offers_la &lt;- read_csv(&quot;data-in/appsandoffers_2021.csv&quot;)</code></pre>
 <p>I use the prefix <code>r_</code> at the start of the variable name for the dataframe I just read in. This denotes the variable as being the ‘raw’ version of the data (i.e. exactly as it appeared at source). When I start to clean and wrangle this data, I will store the manipulated version as a new variable, without the <code>r_</code> prefix. In this way, I always have a copy of the raw data to refer back to if needed.</p>
@@ -568,6 +568,563 @@ From <a href="https://explore-education-statistics.service.gov.uk/find-statistic
 <p>The suppressed values have been read into the R dataframe as null values (<code>NA</code>). As I work through the analysis I will need to decide if and how to impute these missing values.</p>
 </div>
 </div>
+<div id="assess" class="section level2" number="3.2">
+<h2 number="3.2"><span class="header-section-number">3.2</span> Assess</h2>
+<p>Now that I have read the data into R, I can spend some time assessing it to find out what the features look like and what might need to be cleaned.</p>
+<p>I’ll start by looking at a summary of the numerical columns of the dataset.</p>
+<pre class="r"><code>r_offers_la %&gt;% 
+  select(where(is.numeric)) %&gt;% 
+  summary()</code></pre>
+<pre><code>##   time_period      old_la_code    admission_numbers applications_received
+##  Min.   :201415   Min.   :201.0   Min.   :     0    Min.   :    16       
+##  1st Qu.:201516   1st Qu.:334.0   1st Qu.:  2434    1st Qu.:  2185       
+##  Median :201718   Median :807.0   Median :  3551    Median :  3162       
+##  Mean   :201768   Mean   :614.5   Mean   : 12364    Mean   : 11000       
+##  3rd Qu.:201920   3rd Qu.:873.0   3rd Qu.:  6252    3rd Qu.:  5333       
+##  Max.   :202122   Max.   :938.0   Max.   :713090    Max.   :641572       
+##                   NA&#39;s   :176                                            
+##  online_applications online_apps_percent first_preference_offers
+##  Min.   :     1      Min.   :  0.05692   Min.   :    10         
+##  1st Qu.:  1886      1st Qu.: 86.02105   1st Qu.:  1851         
+##  Median :  2845      Median : 93.56607   Median :  2687         
+##  Mean   :  9972      Mean   : 89.15999   Mean   :  9501         
+##  3rd Qu.:  4846      3rd Qu.: 97.18310   3rd Qu.:  4756         
+##  Max.   :580938      Max.   :100.00000   Max.   :566836         
+##  NA&#39;s   :3           NA&#39;s   :3                                  
+##  first_preference_offers_percent second_preference_offers
+##  Min.   :51.40                   Min.   :    0.0         
+##  1st Qu.:81.87                   1st Qu.:  131.0         
+##  Median :88.43                   Median :  218.5         
+##  Mean   :85.82                   Mean   :  771.5         
+##  3rd Qu.:92.27                   3rd Qu.:  381.5         
+##  Max.   :99.72                   Max.   :54187.0         
+##                                  NA&#39;s   :8               
+##  second_preference_offers_percent third_preference_offers
+##  Min.   : 0.000                   Min.   :    0.0        
+##  1st Qu.: 4.533                   1st Qu.:   29.0        
+##  Median : 6.407                   Median :   64.0        
+##  Mean   : 7.204                   Mean   :  250.2        
+##  3rd Qu.: 9.056                   3rd Qu.:  132.0        
+##  Max.   :36.842                   Max.   :20186.0        
+##  NA&#39;s   :8                        NA&#39;s   :10             
+##  third_preference_offers_percent one_of_the_three_preference_offers
+##  Min.   : 0.0000                 Min.   :    13                    
+##  1st Qu.: 0.9258                 1st Qu.:  2082                    
+##  Median : 1.7637                 Median :  3006                    
+##  Mean   : 2.3479                 Mean   : 10534                    
+##  3rd Qu.: 3.1664                 3rd Qu.:  5176                    
+##  Max.   :10.3448                 Max.   :617899                    
+##  NA&#39;s   :10                      NA&#39;s   :4                         
+##  one_of_the_three_preference_offers_percent preferred_school_offer
+##  Min.   : 74.77                             Min.   :    15        
+##  1st Qu.: 93.98                             1st Qu.:  2111        
+##  Median : 96.65                             Median :  3048        
+##  Mean   : 95.36                             Mean   : 10651        
+##  3rd Qu.: 98.04                             3rd Qu.:  5185        
+##  Max.   :100.00                             Max.   :621904        
+##  NA&#39;s   :4                                  NA&#39;s   :4             
+##  preferred_school_offer_percent non_preferred_offer non_preferred_offer_percent
+##  Min.   : 83.80                 Min.   :    0.0     Min.   : 0.000             
+##  1st Qu.: 95.52                 1st Qu.:   43.0     1st Qu.: 1.532             
+##  Median : 97.14                 Median :   90.0     Median : 2.529             
+##  Mean   : 96.56                 Mean   :  330.6     Mean   : 3.050             
+##  3rd Qu.: 98.21                 3rd Qu.:  181.0     3rd Qu.: 4.102             
+##  Max.   :100.00                 Max.   :27893.0     Max.   :16.199             
+##  NA&#39;s   :4                      NA&#39;s   :51          NA&#39;s   :51                 
+##     no_offer       no_offer_percent   schools_in_la_offer
+##  Min.   :   0.00   Min.   : 0.00000   Min.   :     0     
+##  1st Qu.:   0.00   1st Qu.: 0.00000   1st Qu.:  2010     
+##  Median :   1.00   Median : 0.03357   Median :  2948     
+##  Mean   :  39.12   Mean   : 0.40254   Mean   : 10398     
+##  3rd Qu.:   9.00   3rd Qu.: 0.22144   3rd Qu.:  5170     
+##  Max.   :3868.00   Max.   :15.06708   Max.   :622789     
+##  NA&#39;s   :49        NA&#39;s   :49         NA&#39;s   :4          
+##  schools_in_la_offer_percent schools_in_another_la_offer
+##  Min.   :  0.00              Min.   :    0              
+##  1st Qu.: 91.67              1st Qu.:   71              
+##  Median : 95.81              Median :  163              
+##  Mean   : 92.98              Mean   :  601              
+##  3rd Qu.: 97.91              3rd Qu.:  324              
+##  Max.   :100.00              Max.   :48916              
+##  NA&#39;s   :4                   NA&#39;s   :4                  
+##  schools_in_another_la_offer_percent offers_to_nonapplicants
+##  Min.   :  0.000                     Min.   :   0.00        
+##  1st Qu.:  2.091                     1st Qu.:   0.00        
+##  Median :  4.190                     Median :   0.00        
+##  Mean   :  7.017                     Mean   :  23.37        
+##  3rd Qu.:  8.327                     3rd Qu.:   2.00        
+##  Max.   :100.000                     Max.   :2494.00        
+##  NA&#39;s   :4                           NA&#39;s   :11</code></pre>
+<p>From the summary I observe the following:</p>
+<ul>
+<li>The <code>timeperiod</code> column denotes an academic year, but is in the format ‘202021’. I would like to mutate this numeric column (a numeric column so that it displays only the start year of the academic year (i.e. ‘202021’ becomes ‘2020’. I could also rename it to <code>year_of_entry</code> for clarity).</li>
+<li>The <code>old_la_code</code> column contains a categorical variable rather than a true numerical measure, and could benefit from being converted to a string.</li>
+<li>Several of the columns show a large difference between the mean and the median. Looking at the description of the dataset on the <a href="https://explore-education-statistics.service.gov.uk/find-statistics/secondary-and-primary-school-applications-and-offers#dataDownloads-1" title="Applications and Offers">source website</a>, I see that it states: “Figures are provided at national, regional and local authority level.” This means that there are some records that display an aggregation of other records within the dataset. To help my analysis, I will remove these aggregated records (I can easily recreate the aggregations from the remaining granular data if needed).</li>
+<li>As mentioned earlier, some of the columns have missing data and I will need to decide the best way to handle these missing values for my analyses.</li>
+<li><code>online_apps_percent</code> has a large range (min: 0.06%, max: 100%). It might be interesting to see how this measure varies by local authority or over time.</li>
+<li>The columns containing percentages follow the format <code>97.6</code>, <code>88.3</code>, <code>3.2</code> etc. I would like to convert these to decimals (i.e. divide each value by 100) to make it easier to work with later.</li>
+</ul>
+<p>I can also view a summary of the character columns.</p>
+<pre class="r"><code>r_offers_la %&gt;% 
+  select(where(is.character)) %&gt;% 
+  lapply(table)</code></pre>
+<pre><code>## $time_identifier
+## 
+## Academic year 
+##          2588 
+## 
+## $geographic_level
+## 
+## Local authority        National        Regional 
+##            2412              16             160 
+## 
+## $country_code
+## 
+## E92000001 
+##      2588 
+## 
+## $country_name
+## 
+## England 
+##    2588 
+## 
+## $region_code
+## 
+## E12000001 E12000002 E12000003 E12000004 E12000005 E12000006 E12000008 E12000009 
+##       208       384       256       160       240       192       320       252 
+## E13000001 E13000002 
+##       240       320 
+## 
+## $region_name
+## 
+##            East Midlands          East of England             Inner London 
+##                      160                      192                      240 
+##               North East               North West             Outer London 
+##                      208                      384                      320 
+##               South East               South West            West Midlands 
+##                      320                      252                      240 
+## Yorkshire and The Humber 
+##                      256 
+## 
+## $new_la_code
+## 
+## E06000001 E06000002 E06000003 E06000004 E06000005 E06000006 E06000007 E06000008 
+##        16        16        16        16        16        16        16        16 
+## E06000009 E06000010 E06000011 E06000012 E06000013 E06000014 E06000015 E06000016 
+##        16        16        16        16        16        16        16        16 
+## E06000017 E06000018 E06000019 E06000020 E06000021 E06000022 E06000023 E06000024 
+##        16        16        16        16        16        16        16        16 
+## E06000025 E06000026 E06000027 E06000028 E06000029 E06000030 E06000031 E06000032 
+##        16        16        16        12        12        16        16        16 
+## E06000033 E06000034 E06000035 E06000036 E06000037 E06000038 E06000039 E06000040 
+##        16        16        16        16        16        16        16        16 
+## E06000041 E06000042 E06000043 E06000044 E06000045 E06000046 E06000047 E06000048 
+##        16        16        16        16        16        16        16        16 
+## E06000049 E06000050 E06000051 E06000052 E06000054 E06000055 E06000056 E06000058 
+##        16        16        16        16        16        16        16         4 
+## E06000059 E08000001 E08000002 E08000003 E08000004 E08000005 E08000006 E08000007 
+##         4        16        16        16        16        16        16        16 
+## E08000008 E08000009 E08000010 E08000011 E08000012 E08000013 E08000014 E08000015 
+##        16        16        16        16        16        16        16        16 
+## E08000016 E08000017 E08000018 E08000019 E08000020 E08000021 E08000022 E08000023 
+##        16        16        16        16        16        16        16        16 
+## E08000024 E08000025 E08000026 E08000027 E08000028 E08000029 E08000030 E08000031 
+##        16        16        16        16        16        16        16        16 
+## E08000032 E08000033 E08000034 E08000035 E08000036 E09000001 E09000002 E09000003 
+##        16        16        16        16        16        16        16        16 
+## E09000004 E09000005 E09000006 E09000007 E09000008 E09000009 E09000010 E09000011 
+##        16        16        16        16        16        16        16        16 
+## E09000012 E09000013 E09000014 E09000015 E09000016 E09000017 E09000018 E09000019 
+##        16        16        16        16        16        16        16        16 
+## E09000020 E09000021 E09000022 E09000023 E09000024 E09000025 E09000026 E09000027 
+##        16        16        16        16        16        16        16        16 
+## E09000028 E09000029 E09000030 E09000031 E09000032 E09000033 E10000002 E10000003 
+##        16        16        16        16        16        16        16        16 
+## E10000006 E10000007 E10000008 E10000009 E10000011 E10000012 E10000013 E10000014 
+##        16        16        16        12        16        16        16        16 
+## E10000015 E10000016 E10000017 E10000018 E10000019 E10000020 E10000021 E10000023 
+##        16        16        16        16        16        16        16        16 
+## E10000024 E10000025 E10000027 E10000028 E10000029 E10000030 E10000031 E10000032 
+##        16        16        16        16        16        16        16        16 
+## E10000034 
+##        16 
+## 
+## $la_name
+## 
+##               Barking and Dagenham                             Barnet 
+##                                 16                                 16 
+##                           Barnsley       Bath and North East Somerset 
+##                                 16                                 16 
+##                            Bedford                             Bexley 
+##                                 16                                 16 
+##                         Birmingham              Blackburn with Darwen 
+##                                 16                                 16 
+##                          Blackpool                             Bolton 
+##                                 16                                 16 
+##                        Bournemouth Bournemouth Christchurch and Poole 
+##                                 12                                  4 
+##                   Bracknell Forest                           Bradford 
+##                                 16                                 16 
+##                              Brent                  Brighton and Hove 
+##                                 16                                 16 
+##                   Bristol, City of                            Bromley 
+##                                 16                                 16 
+##                    Buckinghamshire                               Bury 
+##                                 16                                 16 
+##                         Calderdale                     Cambridgeshire 
+##                                 16                                 16 
+##                             Camden               Central Bedfordshire 
+##                                 16                                 16 
+##                      Cheshire East          Cheshire West and Chester 
+##                                 16                                 16 
+##                     City of London                           Cornwall 
+##                                 16                                 16 
+##                           Coventry                            Croydon 
+##                                 16                                 16 
+##                            Cumbria                         Darlington 
+##                                 16                                 16 
+##                              Derby                         Derbyshire 
+##                                 16                                 16 
+##                              Devon                          Doncaster 
+##                                 16                                 16 
+##                             Dorset                             Dudley 
+##                                 16                                 16 
+##                             Durham                             Ealing 
+##                                 16                                 16 
+##           East Riding of Yorkshire                        East Sussex 
+##                                 16                                 16 
+##                            Enfield                              Essex 
+##                                 16                                 16 
+##                          Gateshead                    Gloucestershire 
+##                                 16                                 16 
+##                          Greenwich                            Hackney 
+##                                 16                                 16 
+##                             Halton             Hammersmith and Fulham 
+##                                 16                                 16 
+##                          Hampshire                           Haringey 
+##                                 16                                 16 
+##                             Harrow                         Hartlepool 
+##                                 16                                 16 
+##                           Havering                      Herefordshire 
+##                                 16                                 16 
+##                      Hertfordshire                         Hillingdon 
+##                                 16                                 16 
+##                           Hounslow                      Isle of Wight 
+##                                 16                                 16 
+##                          Islington             Kensington and Chelsea 
+##                                 16                                 16 
+##                               Kent        Kingston Upon Hull, City of 
+##                                 16                                 16 
+##               Kingston upon Thames                           Kirklees 
+##                                 16                                 16 
+##                           Knowsley                            Lambeth 
+##                                 16                                 16 
+##                         Lancashire                              Leeds 
+##                                 16                                 16 
+##                          Leicester                     Leicestershire 
+##                                 16                                 16 
+##                           Lewisham                       Lincolnshire 
+##                                 16                                 16 
+##                          Liverpool                              Luton 
+##                                 16                                 16 
+##                         Manchester                             Medway 
+##                                 16                                 16 
+##                             Merton                      Middlesbrough 
+##                                 16                                 16 
+##                      Milton Keynes                Newcastle upon Tyne 
+##                                 16                                 16 
+##                             Newham                            Norfolk 
+##                                 16                                 16 
+##            North East Lincolnshire                 North Lincolnshire 
+##                                 16                                 16 
+##                     North Somerset                     North Tyneside 
+##                                 16                                 16 
+##                    North Yorkshire                   Northamptonshire 
+##                                 16                                 16 
+##                     Northumberland                         Nottingham 
+##                                 16                                 16 
+##                    Nottinghamshire                             Oldham 
+##                                 16                                 16 
+##                        Oxfordshire                       Peterborough 
+##                                 16                                 16 
+##                           Plymouth                              Poole 
+##                                 16                                 12 
+##                         Portsmouth                            Reading 
+##                                 16                                 16 
+##                          Redbridge               Redcar and Cleveland 
+##                                 16                                 16 
+##               Richmond upon Thames                           Rochdale 
+##                                 16                                 16 
+##                          Rotherham                            Rutland 
+##                                 16                                 16 
+##                            Salford                           Sandwell 
+##                                 16                                 16 
+##                             Sefton                          Sheffield 
+##                                 16                                 16 
+##                         Shropshire                             Slough 
+##                                 16                                 16 
+##                           Solihull                           Somerset 
+##                                 16                                 16 
+##              South Gloucestershire                     South Tyneside 
+##                                 16                                 16 
+##                        Southampton                    Southend-on-Sea 
+##                                 16                                 16 
+##                          Southwark                         St. Helens 
+##                                 16                                 16 
+##                      Staffordshire                          Stockport 
+##                                 16                                 16 
+##                   Stockton-on-Tees                     Stoke-on-Trent 
+##                                 16                                 16 
+##                            Suffolk                         Sunderland 
+##                                 16                                 16 
+##                             Surrey                             Sutton 
+##                                 16                                 16 
+##                            Swindon                           Tameside 
+##                                 16                                 16 
+##                 Telford and Wrekin                           Thurrock 
+##                                 16                                 16 
+##                             Torbay                      Tower Hamlets 
+##                                 16                                 16 
+##                           Trafford                          Wakefield 
+##                                 16                                 16 
+##                            Walsall                     Waltham Forest 
+##                                 16                                 16 
+##                         Wandsworth                         Warrington 
+##                                 16                                 16 
+##                       Warwickshire                     West Berkshire 
+##                                 16                                 16 
+##                        West Sussex                        Westminster 
+##                                 16                                 16 
+##                              Wigan                          Wiltshire 
+##                                 16                                 16 
+##             Windsor and Maidenhead                             Wirral 
+##                                 16                                 16 
+##                          Wokingham                      Wolverhampton 
+##                                 16                                 16 
+##                     Worcestershire                               York 
+##                                 16                                 16 
+## 
+## $school_phase
+## 
+##   Primary Secondary 
+##      1294      1294 
+## 
+## $NC_year_admission
+## 
+##    :    7    9    R 
+##  176 1190   16 1206 
+## 
+## $no_of_preferences
+## 
+##    :    3    4    5    6 
+##  176 1245  221  180  766</code></pre>
+<p>From this I can make some further observations:</p>
+<ul>
+<li>Several columns appear to be redundant as they contain only a single value. <code>time_identifer</code>, <code>country_code</code>, <code>country_name</code> can probably all be removed since they contain no useful information.</li>
+<li><code>NC_year_admission</code> and <code>no_of_preferences</code> both contain ‘not applicable’ values denoted by <code>:</code>. I believe these null values are tied to the records with the regional and national aggregated data and will therefore disappear when I remove those rows.</li>
+<li><code>no_of_preferences</code> would be better converted to a numeric column once the ‘not applicable’ records have been removed.</li>
+</ul>
+</div>
+<div id="clean" class="section level2" number="3.3">
+<h2 number="3.3"><span class="header-section-number">3.3</span> Clean</h2>
+<p>I’ll start by fixing the issues I uncovered during my initial assessment. I will save my changes into a new dataframe <code>offers_la</code> so that I have a copy of both the raw data and my edited version.</p>
+<pre class="r"><code># convert the timeperiod column to year_of_entry
+offers_la &lt;- r_offers_la %&gt;% 
+  mutate(time_period = as.character(time_period),
+         time_period = str_sub(time_period, 1, 4),
+         time_period = as.numeric(time_period)) %&gt;% 
+  rename(year_of_entry = time_period)
+
+head(offers_la$year_of_entry)</code></pre>
+<pre><code>## [1] 2021 2021 2021 2021 2021 2021</code></pre>
+<pre class="r"><code># convert the old_la_code column to character
+offers_la &lt;- offers_la %&gt;% 
+  mutate(old_la_code = as.character(old_la_code))
+
+tail(offers_la$old_la_code)</code></pre>
+<pre><code>## [1] &quot;931&quot; &quot;933&quot; &quot;935&quot; &quot;936&quot; &quot;937&quot; &quot;938&quot;</code></pre>
+<pre class="r"><code># remove the aggregated data
+offers_la &lt;- offers_la %&gt;% 
+  filter(geographic_level == &quot;Local authority&quot;)</code></pre>
+<pre class="r"><code># convert percentages to decimal
+offers_la &lt;- offers_la %&gt;% 
+  mutate(across(ends_with(&quot;_percent&quot;), ~ .x / 100))
+
+offers_la %&gt;% 
+  select(ends_with(&quot;_percent&quot;)) %&gt;% 
+  head()</code></pre>
+<pre><code>## # A tibble: 6 x 10
+##   online_apps_perc… first_preference_of… second_preference_… third_preference_o…
+##               &lt;dbl&gt;                &lt;dbl&gt;               &lt;dbl&gt;               &lt;dbl&gt;
+## 1             1                    0.893              0.0357              0     
+## 2             0.999                0.778              0.0974              0.0395
+## 3             0.996                0.889              0.0664              0.0193
+## 4             0.981                0.910              0.0438              0.0189
+## 5             0.983                0.796              0.0878              0.0367
+## 6             1                    0.785              0.0871              0.0356
+## # … with 6 more variables: one_of_the_three_preference_offers_percent &lt;dbl&gt;,
+## #   preferred_school_offer_percent &lt;dbl&gt;, non_preferred_offer_percent &lt;dbl&gt;,
+## #   no_offer_percent &lt;dbl&gt;, schools_in_la_offer_percent &lt;dbl&gt;,
+## #   schools_in_another_la_offer_percent &lt;dbl&gt;</code></pre>
+<pre class="r"><code># remove redundant columns
+offers_la &lt;- offers_la %&gt;% 
+  select(!c(time_identifier, country_code, country_name))</code></pre>
+<pre class="r"><code>offers_la &lt;- offers_la %&gt;% 
+  mutate(no_of_preferences = as.numeric(no_of_preferences))</code></pre>
+<div id="handling-missing-values" class="section level3" number="3.3.1">
+<h3 number="3.3.1"><span class="header-section-number">3.3.1</span> Handling Missing Values</h3>
+<p>I have several columns that contain missing values, and I need to decide if and how to impute these values. I’ll start by inspecting the clean dataframe to find out where the missing values are located.</p>
+<pre class="r"><code>knitr::kable(colSums(is.na(offers_la)),
+             col.names = c(&quot;count_na&quot;))</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left"></th>
+<th align="right">count_na</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">year_of_entry</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">geographic_level</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">region_code</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">region_name</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">new_la_code</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">old_la_code</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">la_name</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">school_phase</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">NC_year_admission</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">admission_numbers</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">applications_received</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">online_applications</td>
+<td align="right">3</td>
+</tr>
+<tr class="odd">
+<td align="left">online_apps_percent</td>
+<td align="right">3</td>
+</tr>
+<tr class="even">
+<td align="left">no_of_preferences</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">first_preference_offers</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">first_preference_offers_percent</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">second_preference_offers</td>
+<td align="right">8</td>
+</tr>
+<tr class="even">
+<td align="left">second_preference_offers_percent</td>
+<td align="right">8</td>
+</tr>
+<tr class="odd">
+<td align="left">third_preference_offers</td>
+<td align="right">10</td>
+</tr>
+<tr class="even">
+<td align="left">third_preference_offers_percent</td>
+<td align="right">10</td>
+</tr>
+<tr class="odd">
+<td align="left">one_of_the_three_preference_offers</td>
+<td align="right">4</td>
+</tr>
+<tr class="even">
+<td align="left">one_of_the_three_preference_offers_percent</td>
+<td align="right">4</td>
+</tr>
+<tr class="odd">
+<td align="left">preferred_school_offer</td>
+<td align="right">4</td>
+</tr>
+<tr class="even">
+<td align="left">preferred_school_offer_percent</td>
+<td align="right">4</td>
+</tr>
+<tr class="odd">
+<td align="left">non_preferred_offer</td>
+<td align="right">51</td>
+</tr>
+<tr class="even">
+<td align="left">non_preferred_offer_percent</td>
+<td align="right">51</td>
+</tr>
+<tr class="odd">
+<td align="left">no_offer</td>
+<td align="right">49</td>
+</tr>
+<tr class="even">
+<td align="left">no_offer_percent</td>
+<td align="right">49</td>
+</tr>
+<tr class="odd">
+<td align="left">schools_in_la_offer</td>
+<td align="right">4</td>
+</tr>
+<tr class="even">
+<td align="left">schools_in_la_offer_percent</td>
+<td align="right">4</td>
+</tr>
+<tr class="odd">
+<td align="left">schools_in_another_la_offer</td>
+<td align="right">4</td>
+</tr>
+<tr class="even">
+<td align="left">schools_in_another_la_offer_percent</td>
+<td align="right">4</td>
+</tr>
+<tr class="odd">
+<td align="left">offers_to_nonapplicants</td>
+<td align="right">11</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div id="export-clean-data" class="section level1" number="4">
+<h1 number="4"><span class="header-section-number">4</span> Export Clean Data</h1>
+<p>I will save my clean data to a new CSV file that I can use for visualization in Tableau.</p>
+<pre class="r"><code>write_csv(offers_la, file=&quot;data-out/offers-la.csv&quot;, na=&quot;&quot;)</code></pre>
 </div>
 
 
