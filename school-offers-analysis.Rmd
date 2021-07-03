@@ -13,7 +13,9 @@ output:
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE,
+                      message = FALSE,
+                      warning = FALSE)
 ```
 
 # Introduction
@@ -61,7 +63,7 @@ Variable names and descriptions for this file are provided below:
 
 ## R Setup
 I will make use of several libraries during this analysis:
-```{r libraries, message=FALSE, warning=FALSE}
+```{r libraries}
 library(tidyverse)
 library(janitor)
 ```
@@ -79,10 +81,48 @@ As I work through the data wrangling and exploration steps, I may uncover furthe
 
 # Data Wrangling
 ## Gather Data
-First we need to run the `read.R` script to read in the source data for this project. Source data files can be found in the `data-in` directory of this repo.
+First I need to read in the data from the [CSV file][3] so that I can explore, clean and analyse it further.
+```{r read-offers}
+r_offers_la <- read_csv("data-in/appsandoffers_2021.csv")
+```
+
+I use the prefix `r_` at the start of the variable name for the dataframe I just read in. This denotes the variable as being the 'raw' version of the data (i.e. exactly as it appeared at source). When I start to clean and wrangle this data, I will store the manipulated version as a new variable, without the `r_` prefix. In this way, I always have a copy of the raw data to refer back to if needed.
+
+### Warnings
+The output of the `read_csv()` code in the chunk above resulted in several warnings relating to parsing failures (the warnings are not displayed here but can be called using `problems(df)`. I will print the warnings into a friendly format to see what is going on. 
+
+```{r read-problems, message=FALSE, warning=FALSE}
+r_offers_la_problems <- problems(r_offers_la) %>% 
+  group_by(col, expected, actual) %>% 
+  summarise(nrows = n())
+```
+
+```{r kable-problems, echo=FALSE}
+knitr::kable(r_offers_la_problems, caption="Table 2: Warnings displayed when reading in the applications and offers data")
+```
+
+Here I can see that there are 19 columns that the `read_csv()` function determined should be numeric based on analysis of the first 1,000 rows of data. However, in some rows it found a string `"c"` in these columns (as shown by the value in the `actual` column above).
+
+From the material that accompanied the data in its [original source location][6] I know that some values were suppressed, and replaced with a string denoting the suppression:
+
+>**Rounding**
+>
+>Primary and secondary suppression was applied in the 2014 dataset. No suppression has been applied from 2015 onwards
+>
+>**Conventions**
+>
+>The following convention is used throughout the underlying data.
+>
+>* ‘c’         Suppressed (2014 only) 
+>* ‘:’         Not applicable.
+>
+>`r tufte::quote_footer('From [Explore Education Statistics][6] website')`
+
+The suppressed values have been read into the R dataframe as null values (`NA`). As I work through the analysis I will need to decide if and how to impute these missing values.
 
 [1]: <https://github.com/clarelgibson/schools> "Github repo"
 [2]: <https://github.com/clarelgibson/schools#readme> "README"
-[3]: <https://github.com/clarelgibson/schools/blob/2da3a0f15ed026f2d0d874eab3008b3653c4810b/data-in/AppsandOffers_2020.csv> "Admissions data"
+[3]: <https://github.com/clarelgibson/schools/blob/94a59bbf3c5a361a437e50ff88b34fc7d4dace09/data-in/appsandoffers_2021.csv> "Admissions data"
 [4]: <https://explore-education-statistics.service.gov.uk/find-statistics/secondary-and-primary-school-applications-and-offers#dataDownloads-1> "Applications and Offers"
 [5]: <https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/> "OGL v3.0"
+[6]: <https://explore-education-statistics.service.gov.uk/find-statistics/secondary-and-primary-school-applications-and-offers/meta-guidance> "Applications and Offers Meta Guidance"

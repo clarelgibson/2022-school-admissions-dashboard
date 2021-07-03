@@ -11,7 +11,7 @@
 
 <meta name="author" content="Clare Gibson" />
 
-<meta name="date" content="2021-07-02" />
+<meta name="date" content="2021-07-03" />
 
 <title>Analysis of Primary School Applications and Offers in Surrey and Hampshire Since 2014</title>
 
@@ -256,7 +256,7 @@ div.tocify {
 <h1 class="title toc-ignore">Analysis of Primary School Applications and Offers in Surrey and Hampshire Since 2014</h1>
 <h3 class="subtitle">Schools Data Analysis</h3>
 <h4 class="author">Clare Gibson</h4>
-<h4 class="date">2021-07-02</h4>
+<h4 class="date">2021-07-03</h4>
 
 </div>
 
@@ -267,7 +267,7 @@ div.tocify {
 <div id="data-overview" class="section level2" number="1.1">
 <h2 number="1.1"><span class="header-section-number">1.1</span> Data Overview</h2>
 <p>In this analysis, I will explore data relating to primary school admissions in Surrey and Hampshire for academic years beginning September 2014. The data was taken from the <a href="https://explore-education-statistics.service.gov.uk/find-statistics/secondary-and-primary-school-applications-and-offers#dataDownloads-1" title="Applications and Offers">UK Government Explore Education Statistics service</a> and contains public sector information licensed under the <a href="https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/" title="OGL v3.0">Open Government Licence v3.0</a>. Full details of the data sources used for this analysis can be found in the <a href="https://github.com/clarelgibson/schools#readme" title="README">README</a> file within the Github repo.</p>
-<p>The CSV dataset is located <a href="data-in/appsandoffers_2021.csv" title="Admissions data">here</a>.</p>
+<p>The CSV dataset is located <a href="https://github.com/clarelgibson/schools/blob/94a59bbf3c5a361a437e50ff88b34fc7d4dace09/data-in/appsandoffers_2021.csv" title="Admissions data">here</a>.</p>
 <p>The dataset includes the number of offers made to applicants for both primary and secondary school places to start in September 2021, methods of application and the proportion who received preferred offers of various type. A time series is included going back to 2014, when primary data was collected for the first time following the introduction of the first primary national offer day.</p>
 <p>While the dataset does include data for both primary and secondary applications, and for every local authority in England, my analysis will focus on primary applications in Surrey and Hampshire.</p>
 <p>Variable names and descriptions for this file are provided below:</p>
@@ -389,6 +389,7 @@ div.tocify {
 </tr>
 </tbody>
 </table>
+<p>Caption: Table 1: Variable names and descriptions in the Applications and Offers dataset</p>
 </div>
 <div id="r-setup" class="section level2" number="1.2">
 <h2 number="1.2"><span class="header-section-number">1.2</span> R Setup</h2>
@@ -413,7 +414,159 @@ library(janitor)</code></pre>
 <h1 number="3"><span class="header-section-number">3</span> Data Wrangling</h1>
 <div id="gather-data" class="section level2" number="3.1">
 <h2 number="3.1"><span class="header-section-number">3.1</span> Gather Data</h2>
-<p>First we need to run the <code>read.R</code> script to read in the source data for this project. Source data files can be found in the <code>data-in</code> directory of this repo.</p>
+<p>First I need to read in the data from the <a href="https://github.com/clarelgibson/schools/blob/94a59bbf3c5a361a437e50ff88b34fc7d4dace09/data-in/appsandoffers_2021.csv" title="Admissions data">CSV file</a> so that I can explore, clean and analyse it further.</p>
+<pre class="r"><code>r_offers_la &lt;- read_csv(&quot;data-in/appsandoffers_2021.csv&quot;)</code></pre>
+<p>I use the prefix <code>r_</code> at the start of the variable name for the dataframe I just read in. This denotes the variable as being the ‘raw’ version of the data (i.e. exactly as it appeared at source). When I start to clean and wrangle this data, I will store the manipulated version as a new variable, without the <code>r_</code> prefix. In this way, I always have a copy of the raw data to refer back to if needed.</p>
+<div id="warnings" class="section level3" number="3.1.1">
+<h3 number="3.1.1"><span class="header-section-number">3.1.1</span> Warnings</h3>
+<p>The output of the <code>read_csv()</code> code in the chunk above resulted in several warnings relating to parsing failures (the warnings are not displayed here but can be called using <code>problems(df)</code>. I will print the warnings into a friendly format to see what is going on.</p>
+<pre class="r"><code>r_offers_la_problems &lt;- problems(r_offers_la) %&gt;% 
+  group_by(col, expected, actual) %&gt;% 
+  summarise(nrows = n())</code></pre>
+<table>
+<caption>Table 2: Warnings displayed when reading in the applications and offers data</caption>
+<thead>
+<tr class="header">
+<th align="left">col</th>
+<th align="left">expected</th>
+<th align="left">actual</th>
+<th align="right">nrows</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">no_offer</td>
+<td align="left">a double</td>
+<td align="left">c</td>
+<td align="right">49</td>
+</tr>
+<tr class="even">
+<td align="left">no_offer_percent</td>
+<td align="left">a double</td>
+<td align="left">c</td>
+<td align="right">49</td>
+</tr>
+<tr class="odd">
+<td align="left">non_preferred_offer</td>
+<td align="left">a double</td>
+<td align="left">c</td>
+<td align="right">51</td>
+</tr>
+<tr class="even">
+<td align="left">non_preferred_offer_percent</td>
+<td align="left">a double</td>
+<td align="left">c</td>
+<td align="right">51</td>
+</tr>
+<tr class="odd">
+<td align="left">offers_to_nonapplicants</td>
+<td align="left">a double</td>
+<td align="left">c</td>
+<td align="right">11</td>
+</tr>
+<tr class="even">
+<td align="left">one_of_the_three_preference_offers</td>
+<td align="left">a double</td>
+<td align="left">c</td>
+<td align="right">4</td>
+</tr>
+<tr class="odd">
+<td align="left">one_of_the_three_preference_offers_percent</td>
+<td align="left">a double</td>
+<td align="left">c</td>
+<td align="right">4</td>
+</tr>
+<tr class="even">
+<td align="left">online_applications</td>
+<td align="left">a double</td>
+<td align="left">c</td>
+<td align="right">3</td>
+</tr>
+<tr class="odd">
+<td align="left">online_apps_percent</td>
+<td align="left">a double</td>
+<td align="left">c</td>
+<td align="right">3</td>
+</tr>
+<tr class="even">
+<td align="left">preferred_school_offer</td>
+<td align="left">a double</td>
+<td align="left">c</td>
+<td align="right">4</td>
+</tr>
+<tr class="odd">
+<td align="left">preferred_school_offer_percent</td>
+<td align="left">a double</td>
+<td align="left">c</td>
+<td align="right">4</td>
+</tr>
+<tr class="even">
+<td align="left">schools_in_another_la_offer</td>
+<td align="left">a double</td>
+<td align="left">c</td>
+<td align="right">4</td>
+</tr>
+<tr class="odd">
+<td align="left">schools_in_another_la_offer_percent</td>
+<td align="left">a double</td>
+<td align="left">c</td>
+<td align="right">4</td>
+</tr>
+<tr class="even">
+<td align="left">schools_in_la_offer</td>
+<td align="left">a double</td>
+<td align="left">c</td>
+<td align="right">4</td>
+</tr>
+<tr class="odd">
+<td align="left">schools_in_la_offer_percent</td>
+<td align="left">a double</td>
+<td align="left">c</td>
+<td align="right">4</td>
+</tr>
+<tr class="even">
+<td align="left">second_preference_offers</td>
+<td align="left">a double</td>
+<td align="left">c</td>
+<td align="right">8</td>
+</tr>
+<tr class="odd">
+<td align="left">second_preference_offers_percent</td>
+<td align="left">a double</td>
+<td align="left">c</td>
+<td align="right">8</td>
+</tr>
+<tr class="even">
+<td align="left">third_preference_offers</td>
+<td align="left">a double</td>
+<td align="left">c</td>
+<td align="right">10</td>
+</tr>
+<tr class="odd">
+<td align="left">third_preference_offers_percent</td>
+<td align="left">a double</td>
+<td align="left">c</td>
+<td align="right">10</td>
+</tr>
+</tbody>
+</table>
+<p>Here I can see that there are 19 columns that the <code>read_csv()</code> function determined should be numeric based on analysis of the first 1,000 rows of data. However, in some rows it found a string <code>&quot;c&quot;</code> in these columns (as shown by the value in the <code>actual</code> column above).</p>
+<p>From the material that accompanied the data in its <a href="https://explore-education-statistics.service.gov.uk/find-statistics/secondary-and-primary-school-applications-and-offers/meta-guidance" title="Applications and Offers Meta Guidance">original source location</a> I know that some values were suppressed, and replaced with a string denoting the suppression:</p>
+<blockquote>
+<p><strong>Rounding</strong></p>
+<p>Primary and secondary suppression was applied in the 2014 dataset. No suppression has been applied from 2015 onwards</p>
+<p><strong>Conventions</strong></p>
+<p>The following convention is used throughout the underlying data.</p>
+<ul>
+<li>‘c’ Suppressed (2014 only)</li>
+<li>‘:’ Not applicable.</li>
+</ul>
+<footer>
+From <a href="https://explore-education-statistics.service.gov.uk/find-statistics/secondary-and-primary-school-applications-and-offers/meta-guidance" title="Applications and Offers Meta Guidance">Explore Education Statistics</a> website
+</footer>
+</blockquote>
+<p>The suppressed values have been read into the R dataframe as null values (<code>NA</code>). As I work through the analysis I will need to decide if and how to impute these missing values.</p>
+</div>
 </div>
 </div>
 
