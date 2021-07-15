@@ -212,11 +212,32 @@ knitr::kable(colSums(is.na(offers_la)),
              col.names = c("count_na"))
 ```
 
+## Reshape
+For one of my Tableau analyses, I need the data to be in long format rather than wide format. This is for my comparison of `admission_numbers` and `applications_received`. I will extract the data I need for this analysis from the main dataframe and pivot the records into a longer format.
+
+```{r offers-pivot}
+offers_la_long <- offers_la %>% 
+  select(year_of_entry,
+         la_name,
+         school_phase,
+         admission_numbers,
+         applications_received) %>% 
+  pivot_longer(cols = c(admission_numbers, applications_received),
+               names_to = "measure",
+               values_to = "count") %>% 
+  mutate(measure = case_when(
+    measure == "admission_numbers" ~ "Admission Numbers",
+    measure == "applications_received" ~ "Applications Received",
+    TRUE ~ measure))
+```
+
+
 # Export Clean Data
 I will save my clean data to a new CSV file that I can use for visualization in Tableau.
 
 ```{r offers-export-csv}
 write_csv(offers_la, file="data-out/offers-la.csv", na="")
+write_csv(offers_la_long, file="data-out/offers-la-long.csv", na="")
 ```
 
 
