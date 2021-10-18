@@ -1,6 +1,6 @@
 ---
 title: "Analysis of Primary School Applications and Offers in Surrey and Hampshire Since 2014"
-subtitle: "Schools Data Analysis"
+subtitle: "Offer Preference Analysis"
 author: "Clare Gibson"
 date: "`r Sys.Date()`"
 output: 
@@ -84,7 +84,7 @@ As I work through the data wrangling and exploration steps, I may uncover furthe
 ## Gather
 First I need to read in the data from the [CSV file][3] so that I can explore, clean and analyse it further.
 ```{r read-offers}
-r_offers_la <- read_csv("data-in/appsandoffers_2021.csv")
+r_offers_la <- read_csv("data-in/2021_appsandoffers.csv")
 ```
 
 I use the prefix `r_` at the start of the variable name for the dataframe I just read in. This denotes the variable as being the 'raw' version of the data (i.e. exactly as it appeared at source). When I start to clean and wrangle this data, I will store the manipulated version as a new variable, without the `r_` prefix. In this way, I always have a copy of the raw data to refer back to if needed.

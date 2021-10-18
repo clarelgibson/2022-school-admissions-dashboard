@@ -11,7 +11,7 @@
 
 <meta name="author" content="Clare Gibson" />
 
-<meta name="date" content="2021-07-03" />
+<meta name="date" content="2021-08-14" />
 
 <title>Analysis of Primary School Applications and Offers in Surrey and Hampshire Since 2014</title>
 
@@ -254,9 +254,9 @@ div.tocify {
 
 
 <h1 class="title toc-ignore">Analysis of Primary School Applications and Offers in Surrey and Hampshire Since 2014</h1>
-<h3 class="subtitle">Schools Data Analysis</h3>
+<h3 class="subtitle">Offer Preference Analysis</h3>
 <h4 class="author">Clare Gibson</h4>
-<h4 class="date">2021-07-03</h4>
+<h4 class="date">2021-08-14</h4>
 
 </div>
 
@@ -415,7 +415,7 @@ library(janitor)</code></pre>
 <div id="gather" class="section level2" number="3.1">
 <h2 number="3.1"><span class="header-section-number">3.1</span> Gather</h2>
 <p>First I need to read in the data from the <a href="https://github.com/clarelgibson/schools/blob/94a59bbf3c5a361a437e50ff88b34fc7d4dace09/data-in/appsandoffers_2021.csv" title="Admissions data">CSV file</a> so that I can explore, clean and analyse it further.</p>
-<pre class="r"><code>r_offers_la &lt;- read_csv(&quot;data-in/appsandoffers_2021.csv&quot;)</code></pre>
+<pre class="r"><code>r_offers_la &lt;- read_csv(&quot;data-in/2021_appsandoffers.csv&quot;)</code></pre>
 <p>I use the prefix <code>r_</code> at the start of the variable name for the dataframe I just read in. This denotes the variable as being the ‘raw’ version of the data (i.e. exactly as it appeared at source). When I start to clean and wrangle this data, I will store the manipulated version as a new variable, without the <code>r_</code> prefix. In this way, I always have a copy of the raw data to refer back to if needed.</p>
 <div id="warnings" class="section level3" number="3.1.1">
 <h3 number="3.1.1"><span class="header-section-number">3.1.1</span> Warnings</h3>
@@ -1120,11 +1120,29 @@ offers_la &lt;- offers_la %&gt;%
 </table>
 </div>
 </div>
+<div id="reshape" class="section level2" number="3.4">
+<h2 number="3.4"><span class="header-section-number">3.4</span> Reshape</h2>
+<p>For one of my Tableau analyses, I need the data to be in long format rather than wide format. This is for my comparison of <code>admission_numbers</code> and <code>applications_received</code>. I will extract the data I need for this analysis from the main dataframe and pivot the records into a longer format.</p>
+<pre class="r"><code>offers_la_long &lt;- offers_la %&gt;% 
+  select(year_of_entry,
+         la_name,
+         school_phase,
+         admission_numbers,
+         applications_received) %&gt;% 
+  pivot_longer(cols = c(admission_numbers, applications_received),
+               names_to = &quot;measure&quot;,
+               values_to = &quot;count&quot;) %&gt;% 
+  mutate(measure = case_when(
+    measure == &quot;admission_numbers&quot; ~ &quot;Admission Numbers&quot;,
+    measure == &quot;applications_received&quot; ~ &quot;Applications Received&quot;,
+    TRUE ~ measure))</code></pre>
+</div>
 </div>
 <div id="export-clean-data" class="section level1" number="4">
 <h1 number="4"><span class="header-section-number">4</span> Export Clean Data</h1>
 <p>I will save my clean data to a new CSV file that I can use for visualization in Tableau.</p>
-<pre class="r"><code>write_csv(offers_la, file=&quot;data-out/offers-la.csv&quot;, na=&quot;&quot;)</code></pre>
+<pre class="r"><code>write_csv(offers_la, file=&quot;data-out/offers-la.csv&quot;, na=&quot;&quot;)
+write_csv(offers_la_long, file=&quot;data-out/offers-la-long.csv&quot;, na=&quot;&quot;)</code></pre>
 </div>
 
 
