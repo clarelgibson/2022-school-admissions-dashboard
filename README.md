@@ -5,13 +5,27 @@ This repo contains data and analysis relating to primary school admission and pe
 
 ## Files and folders in this repo
 
-### data-in
+### [data-in](/data-in)
 Contains the raw data used for the analysis. Note that due to the current COVID-19 pandemic, the UK Government is not publishing any data relating to school performance for 2020 and it is unlikely to do so for 2021. At the time of writing, this means that the most recent academic year for which performance data is available is 2018-2019.
 
 #### Apps and Offers
+
 * AppsandOffers_2021.csv
 
 This file contains statistics relating to the number of offers made to applicants for secondary and primary school places for academic years from 2014-2015 through to 2021-2022, and the proportion which received preferred offers. I downloaded this file from the [UK Government Explore Education Statistics service][4].
+
+#### Waverley Offers
+
+* 2018_936_waverley_offers_crit.csv
+* 2018_936_waverley_offers_school.csv
+* 2019_936_waverley_offers_crit.csv
+* 2019_936_waverley_offers_school.csv
+* 2020_936_waverley_offers_crit.csv
+* 2020_936_waverley_offers_school.csv
+* 2021_936_waverley_offers_crit.csv
+* 2021_936_waverley_offers_school.csv
+
+The files above contain school-level admissions data for Waverley Borough in Surrey. The data is restricted to primary school admissions for Year R intake only. The dataset includes the Published Admission Number (PAN) for each school, the number of applications received (of any preference) and the number of places offered both overall and by admission criterion. The dataset also includes the Last Distance Offered metric which details the furthest distance from the school that an applicant lives when the school is oversubscribed.
 
 #### KS2 Performance
 
@@ -46,6 +60,9 @@ Contains reference materials related to this analysis. Each file in this directo
 ### schools.Rproj
 The R Project file for this analysis.
 
+### schools-data-prep.R
+R script to read, clean and prepare data from the [data-in](/data-in) directory for analysis.
+
 ### read.R
 R script file to read in the raw data (from the data-in directory).
 
@@ -68,6 +85,7 @@ Contains saved rda files.
 * Find and compare schools in England (<https://www.gov.uk/school-performance-tables>)
 * Get information about schools (<https://get-information-schools.service.gov.uk/>)
 * Explore education statistics (<https://explore-education-statistics.service.gov.uk/>)
+* Waverley school admissions (<https://www.surreycc.gov.uk/schools-and-learning/schools/admissions/arrangements-and-outcomes/previous-years>)
 
 [1]: <https://www.compare-school-performance.service.gov.uk/download-data> "School performance download service"
 [2]: <https://get-information-schools.service.gov.uk/> "Get information about schools"
