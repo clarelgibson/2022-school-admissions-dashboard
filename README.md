@@ -8,6 +8,16 @@ This repo contains data and analysis relating to primary school admission and pe
 ### [data-in](/data-in)
 Contains the raw data used for the analysis. Note that due to the current COVID-19 pandemic, the UK Government is not publishing any data relating to school performance for 2020 and it is unlikely to do so for 2021. At the time of writing, this means that the most recent academic year for which performance data is available is 2018/19.
 
+#### [info](/data-in/info)
+
+* Source: [Get Information About Schools](https://get-information-schools.service.gov.uk/)
+
+The file above contains additional data relating to primary schools in Hampshire (LA no. 850) and Surrey (LA no. 936). In order to generate this file, I  made the following selections:
+
+1. Find an establishment by local authority: Hampshire and Surrey. Includes open schools only.
+2. On the search results page I filtered the results to All-through, Middle Deemed Primary and Primary
+3. On the next page I opted to choose a specific set of data and entered the following fields: DistrictAdministrative(name), EstablishmentNumber, EstablishmentName, EstablishmentTypeGroup(name), LA(code), OfstedRating(name), PercentageFSM, PhaseOfEducation(name), ReligiousCharacter(name), URN
+
 #### [ks2](/data-in/ks2)
 
 * Source: [School Performance Data Download Service](https://www.compare-school-performance.service.gov.uk/download-data)
@@ -32,73 +42,34 @@ The CSV files in this folder were manually transcribed from the source PDF files
 
 * Source: [Surrey County Council](https://www.surreycc.gov.uk/schools-and-learning/schools/admissions/arrangements-and-outcomes/previous-years)
 
-Contains the total number of Year R places offered and the last distance offered metric by school and academic year for all primary schools in Waverley for academic years 2018/19 through to 2021/22.
+This dataset includes the Published Admission Number (PAN) for each school, the number of applications received (of any preference) and the number of places offered both overall and by admission criterion. The dataset also includes the Last Distance Offered metric which details the furthest distance from the school that an applicant lives when the school is oversubscribed. Data is included for academic years 2018/19 through to 2021/22.
 
 The CSV files in this folder were manually transcribed from the source PDF files and may contain transcription errors.
 
+Further details including an explanation of the terminology used in these data files can be found in the [ref](/ref) folder.
+
 #### [offers-la](/data-in/offers-la)
 
-* AppsandOffers_2021.csv
+* Source: [Explore Education Statistics Service](https://explore-education-statistics.service.gov.uk/find-statistics/secondary-and-primary-school-applications-and-offers#dataDownloads-1)
 
-This file contains statistics relating to the number of offers made to applicants for secondary and primary school places for academic years from 2014-2015 through to 2021-2022, and the proportion which received preferred offers. I downloaded this file from the [UK Government Explore Education Statistics service][4].
+This file contains statistics relating to the number of offers made to applicants for secondary and primary school places for academic years from 2014/15 through to 2021/22, and the proportion which received preferred offers.
 
-#### Waverley Offers
+Further details including an explanation of the terminology used in these data files can be found in the [ref](/ref) folder.
 
-* 2018_936_waverley_offers_crit.csv
-* 2018_936_waverley_offers_school.csv
-* 2019_936_waverley_offers_crit.csv
-* 2019_936_waverley_offers_school.csv
-* 2020_936_waverley_offers_crit.csv
-* 2020_936_waverley_offers_school.csv
-* 2021_936_waverley_offers_crit.csv
-* 2021_936_waverley_offers_school.csv
+### [data-out](/data-out)
+Contains cleaned data tables for use in the analyses.
 
-The files above contain school-level admissions data for Waverley Borough in Surrey. The data is restricted to primary school admissions for Year R intake only. The dataset includes the Published Admission Number (PAN) for each school, the number of applications received (of any preference) and the number of places offered both overall and by admission criterion. The dataset also includes the Last Distance Offered metric which details the furthest distance from the school that an applicant lives when the school is oversubscribed.
+### [rda](/rda)
+Contains saved rda files.
 
-#### School Information
-
-* 2021-05-07_850_936_gias.csv
-
-The file above contains additional data relating to primary schools in Hampshire (LA no. 850) and Surrey (LA no. 936). In order to generate this file, I navigated to the [get information about schools service][2] and made the following selections:
-
-1. Find an establishment by local authority: Hampshire and Surrey. Includes open schools only.
-2. On the search results page I filtered the results to All-through, Middle Deemed Primary and Primary
-3. On the next page I opted to choose a specific set of data and entered the following fields: DistrictAdministrative(name), EstablishmentNumber, EstablishmentName, EstablishmentTypeGroup(name), LA(code), OfstedRating(name), PercentageFSM, PhaseOfEducation(name), ReligiousCharacter(name), URN
-
-### ref
-Contains reference materials related to this analysis. Each file in this directory contains additional details about the contents of the raw data csv files in the **data-in** folder. Further information and definitions of commonly used terms in the field of education performance measures can be found on the [GIAS glossary page][3].
-
-### schools.Rproj
-The R Project file for this analysis.
+### [ref](/ref)
+Contains reference materials related to this analysis. Each file in this directory contains additional details about the contents of the raw data csv files in the [data-in](/data-in) folder. Further information and definitions of commonly used terms in the field of education performance measures can be found on the [GIAS glossary page](https://get-information-schools.service.gov.uk/glossary).
 
 ### schools-data-prep.R
 R script to read, clean and prepare data from the [data-in](/data-in) directory for analysis.
-
-### read.R
-R script file to read in the raw data (from the data-in directory).
-
-### clean.R
-R script file to clean the raw data. Selects required columns and renames columns for brevity, removes unwanted rows.
-
-### eda.R
-R script file for exploratory data analysis. Used to get to know the contents of the raw data better whilst cleaning it.
-
-### offers_la.R
-R script file to prepare and export the data for analysis of school offers by local authority.
-
-### performance.R
-R script file to prepare the data for analysis of primary school KS2 performance. Summarises ks2 performance data to report a single average score for the 3 years of data collected.
-
-### rda
-Contains saved rda files.
 
 ## Sources and Credits
 * Find and compare schools in England (<https://www.gov.uk/school-performance-tables>)
 * Get information about schools (<https://get-information-schools.service.gov.uk/>)
 * Explore education statistics (<https://explore-education-statistics.service.gov.uk/>)
 * Waverley school admissions (<https://www.surreycc.gov.uk/schools-and-learning/schools/admissions/arrangements-and-outcomes/previous-years>)
-
-[1]: <https://www.compare-school-performance.service.gov.uk/download-data> "School performance download service"
-[2]: <https://get-information-schools.service.gov.uk/> "Get information about schools"
-[3]: <https://get-information-schools.service.gov.uk/glossary> "GIAS glossary"
-[4]: <https://explore-education-statistics.service.gov.uk/find-statistics/secondary-and-primary-school-applications-and-offers#dataDownloads-1> "Applications and Offers"
