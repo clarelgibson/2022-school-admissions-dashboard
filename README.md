@@ -1,14 +1,42 @@
 # Schools
 ## Analysis of school admission and performance data for Surrey and Hampshire
 
-This repo contains data and analysis relating to primary school admission and performance data in Surrey and Hampshire for academic years beginning September 2016.
+This repo contains data and analysis relating to primary school admission and performance data in Surrey and Hampshire for academic years going as far back as 2014.
 
 ## Files and folders in this repo
 
 ### [data-in](/data-in)
-Contains the raw data used for the analysis. Note that due to the current COVID-19 pandemic, the UK Government is not publishing any data relating to school performance for 2020 and it is unlikely to do so for 2021. At the time of writing, this means that the most recent academic year for which performance data is available is 2018-2019.
+Contains the raw data used for the analysis. Note that due to the current COVID-19 pandemic, the UK Government is not publishing any data relating to school performance for 2020 and it is unlikely to do so for 2021. At the time of writing, this means that the most recent academic year for which performance data is available is 2018/19.
 
-#### Apps and Offers
+#### [ks2](/data-in/ks2)
+
+* Source: [School Performance Data Download Service](https://www.compare-school-performance.service.gov.uk/download-data)
+
+Contains Key Stage 2 performance data for primary schools in Hampshire (Local Authority no. 850) and Surrey (LA no. 936) for the academic years 2016/17, 2017/18 and 2018/19. In order to generate each file, I made the following selections:
+
+1. Academic year: either 2016/17, 2017/18 or 2018/19
+2. Local authority: either Hampshire (850) or Surrey (936)
+3. Data types: Final key stage 4
+
+Further details including an explanation of the terminology used in these data files can be found in the [ref](/ref) folder.
+
+#### [offers-criteria](/data-in/offers-criteria)
+
+* Source: [Surrey County Council](https://www.surreycc.gov.uk/schools-and-learning/schools/admissions/arrangements-and-outcomes/previous-years)
+
+Contains the number of Year R places offered by criteria, school and academic year across all primary schools in Waverley Borough (part of the Surrey local authority) for academic years 2018/19 through to 2021/22.
+
+The CSV files in this folder were manually transcribed from the source PDF files and may contain transcription errors.
+
+#### [offers-school](/data-in/offers-school)
+
+* Source: [Surrey County Council](https://www.surreycc.gov.uk/schools-and-learning/schools/admissions/arrangements-and-outcomes/previous-years)
+
+Contains the total number of Year R places offered and the last distance offered metric by school and academic year for all primary schools in Waverley for academic years 2018/19 through to 2021/22.
+
+The CSV files in this folder were manually transcribed from the source PDF files and may contain transcription errors.
+
+#### [offers-la](/data-in/offers-la)
 
 * AppsandOffers_2021.csv
 
@@ -26,23 +54,6 @@ This file contains statistics relating to the number of offers made to applicant
 * 2021_936_waverley_offers_school.csv
 
 The files above contain school-level admissions data for Waverley Borough in Surrey. The data is restricted to primary school admissions for Year R intake only. The dataset includes the Published Admission Number (PAN) for each school, the number of applications received (of any preference) and the number of places offered both overall and by admission criterion. The dataset also includes the Last Distance Offered metric which details the furthest distance from the school that an applicant lives when the school is oversubscribed.
-
-#### KS2 Performance
-
-* 2016-2017_850_ks2final.csv
-* 2016-2017_936_ks2final.csv
-* 2017-2018_850_ks2final.csv
-* 2017-2018_936_ks2final.csv
-* 2018-2019_850_ks2final.csv
-* 2018-2019_936_ks2final.csv
-
-The files above contain Key Stage 2 performance data for primary schools in Hampshire (Local Authority no. 850) and Surrey (LA no. 936) for the academic years 2016-2017, 2017-2018 and 2018-2019. In order to generate each file, I navigated to the [school performance data download service][1] and made the following selections:
-
-1. Academic year: either 2016-2017, 2017-2018 or 2018-2019
-2. Local authority: either Hampshire (850) or Surrey (936)
-3. Data types: Final key stage 4
-
-Further details including an explanation of the terminology used in these data files can be found in the **ref** folder.
 
 #### School Information
 
