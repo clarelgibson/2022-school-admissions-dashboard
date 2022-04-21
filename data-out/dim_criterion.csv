@@ -1,0 +1,90 @@
+criterion_key,criterion,criterion_category,enhanced_criterion_flag,criterion_description
+1,Centrally offered,Central & Lates,Not Enhanced,Children offered a place but for whom this school was not one of their preferred schools
+2,Lates,Central & Lates,Not Enhanced,Places offered to children of applicants who had applied late
+3,Catchment,Defined Residence,Enhanced,"Children living within the designated parts of Seale and the Sands, south of the A31"
+4,Nearest School,Defined Residence,Enhanced,Children for whom St John’s school is the nearest school admitting pupils of the same age
+5,Nearest School,Defined Residence,Enhanced,Children for whom the school is the nearest to their home address as measured by straight line - the nearest school will be the school closest to the home address that has a Published Admission Number to admit pupils of the appropriate age range and which admits local children. The nearest school may be either inside or outside the county boundary.
+6,Resident in Parish,Defined Residence,Enhanced,"Children living in the civil parish of Wonersh (which includes Blackheath, Shamley Green and Wonersh) or in the ecclesiastical parishes of Shamley Green (which includes most of Rowly) or Wonersh with Blackheath"
+7,Resident in Parish,Defined Residence,Enhanced,"Children living within the boundaries of the ecclesiastical Parish of Tilford, the hamlets of Rushmoor and Pitch Place"
+8,Resident in Parish,Defined Residence,Enhanced,Children living within the parish boundary of Chiddingfold
+9,Resident in Parish,Defined Residence,Enhanced,Children of families living in the Parish of Godalming
+10,Resident in Parish,Defined Residence,Enhanced,Children of families living within the Ecclesiastical Parishes of Bramley and Grafham
+11,Resident in Parish,Defined Residence,Enhanced,Children resident in the Ecclesiastical Parishes of Elstead or Thursley or Shackleford with Peper Harow.
+12,Resident in Parish,Defined Residence,Enhanced,Children resident in the Parishes of Elstead or Thursley
+13,Resident in Parish,Defined Residence,Enhanced,Children who live in the Ecclesiastical Parish of Ewhurst with Okewood and Forest Green
+14,Resident in Parish,Defined Residence,Enhanced,"Children who live within the ecclesiastical parish boundary of All Saints, Grayswood"
+15,Resident in Parish,Defined Residence,Enhanced,"Children who live within the parish boundary of St Peter’s Church, Wrecclesham"
+16,Resident in Parish,Defined Residence,Enhanced,"Families living within the ecclesiastical parish of Frensham which includes: Peakfield, Millbridge, Shortfield, Lane End, Dockenfield, West End, Spreakley and Moons Hil"
+17,Others by Distance,Distance,Not Enhanced,Any other child whose parents want them to attend this Church of England school
+18,Others by Distance,Distance,Not Enhanced,Any other child whose parents wish them to attend Grayswood Church of England (Aided) Primary School
+19,Others by Distance,Distance,Not Enhanced,Any other children whose parents wish them to attend St Peter’s CofE Primary School.
+20,Others by Distance,Distance,Not Enhanced,"Any other children, prioritised according to the distance they live from the school"
+21,Others by Distance,Distance,Not Enhanced,Children living outside the area specified in criterion 4 whose parents wish their child to attend this Church of England School
+22,Others by Distance,Distance,Not Enhanced,Children living outside the area specified in criterion 5 whose parents wish their child to attend this Church of England school
+23,Others by Distance,Distance,Not Enhanced,"Children resident outside the Ecclesiastical Parishes of Elstead, Thursley or Shackleford with Peper Harow whose parents wish them to attend this church school."
+24,Children of staff,Family Ties,Enhanced,Children of permanent members of staff where the member of staff has been employed at the school for two or more years at the time at which the application for admission to the school is made; and/or the member of staff is recruited to fill a vacant post for which there is a demonstrable skill shortage
+25,Children of staff,Family Ties,Enhanced,Children of staff
+26,Children of staff,Family Ties,Enhanced,Children of staff where the member of staff has been employed at the school for two or more years and/or the member of staff has been recruited to fill a vacant post for which there is a demonstrable skills shortage.
+27,Children of staff,Family Ties,Enhanced,"Children of staff who are employed at the school and who meet one of the following conditions a) employed for two or more years at the time at which the application for admission to the school is made, and/or b) the member of staff is recruited to fill a vacant post for which there is a demonstrable skill shortage"
+28,Children of staff,Family Ties,Enhanced,"Children of staff who are employed at the school and who meet one of the following conditions a) employed for two or more years at the time at which the application for admission to the school is made, and/or b) the member of staff is recruited to fill a vacant post for which there is a demonstrable skill shortage."
+29,Children of staff,Family Ties,Enhanced,Children of staff who have been employed at the school for at least 2 years by the closing date for applications OR who have been recruited to fill a vacant post for which there is a demonstrable skills shortage.
+30,Children of staff,Family Ties,Enhanced,"Children of staff, priority will be given to children of members of the senior leadership team who have been employed at the school for two or more years and for new staff employed to a difficult to recruit position"
+31,Children of staff,Family Ties,Enhanced,Children whose parent is a permanent member of staff at the school and meets either or both of the following circumstances: a) the member of staff has been employed at Milford school for two or more years at the time at which the application for admission to the school is made; and/or b) the member of staff is recruited to fill a vacant post for which there is a demonstrable skill shortage.
+32,Future Sibling,Family Ties,Enhanced,Children who will have at least one sibling on roll at Milford School at the time of admission.
+33,Nearest School,Family Ties,Enhanced,Children for whom the school is the nearest to their home address as measured by straight line - the nearest school will be the school closest to the home address that has a Published Admission Number to admit pupils of the appropriate age range and which admits local children. The nearest school may be either inside or outside the county boundary.
+34,Siblings,Family Ties,Enhanced,Children who have a sibling at the school at the time of application OR a sibling who has previously attended the school for a minimum of one year.
+35,Siblings,Family Ties,Enhanced,Children who have at least one sibling on roll at Milford School at the time of application
+36,Siblings,Family Ties,Enhanced,"Children who will have a sibling at the school or at an infant/junior school which operates shared sibling priority, at the time of the child’s admission"
+37,Siblings,Family Ties,Enhanced,"Siblings of children who will be on roll at the school or children who, at the time of admission to the school, have a sibling who has attended the school and is or will be on the roll at Waverley Abbey Junior School or South Farnham School"
+38,Siblings of Former Pupils,Family Ties,Enhanced,"Children who have a sibling who has previously attended St Mary’s School, Frensham for a minimum of two years"
+39,Siblings of Former Pupils,Family Ties,Enhanced,Siblings of former pupils who have left the school in the three years prior to application
+40,Siblings Resident in Parish,Family Ties,Enhanced,Siblings of existing pupils at the school who live within the parish boundary of Chiddingfold and who will still be on roll at the time of entry
+41,Catholic Exceptional,Priority,Enhanced,Catholic children with an exceptional or compelling need that can only be met at St Edmund’s Catholic Primary School
+42,Catholic LAC & PLAC,Priority,Enhanced,Catholic looked after and previously looked after children
+43,EHCP,Priority,Enhanced,"Children with an Education, Health and Care Plan"
+44,Exceptional,Priority,Enhanced,Children with serious medical conditions or sensitive family circumstances
+45,Exceptional,Priority,Enhanced,Exceptional social/medical need
+46,LAC & PLAC,Priority,Enhanced,Looked after and previously looked after children
+47,Baptised CofE,Religion,Enhanced,Children who have been baptised into the Church of England
+48,Baptised Other Christian,Religion,Enhanced,Baptised children of other Christian denominations
+49,Catechumens,Religion,Enhanced,"Catechumens, Candidates for Reception into the Church and children who are members of an Orthodox Church"
+50,Catholic Resident in Parish,Religion,Enhanced,"Catholic children without a brother or sister at the school at the time of admission, resident in the Cranleigh and Bramley parish"
+51,Catholic Resident in Parish,Religion,Enhanced,"Catholic children without a brother or sister at the school at the time of admission, resident in the parish of Godalming, whose parent/carer attends Sunday Mass at least once a month"
+52,Catholic Resident in Parish,Religion,Enhanced,"Catholic children without a brother or sister at the school at the time of admission, resident in the parishes named in criterion 2 whose parent/carer attends Sunday Mass at least once a month"
+53,Catholic Resident outside Parish,Religion,Enhanced,"Catholic children without a brother or sister at the school at the time of admission, who are not resident in the named parishes in criterion 2 whose parent/carer attends Sunday Mass at least once a month"
+54,Catholic Resident outside Parish,Religion,Enhanced,"Catholic children without a brother or sister at the school at the time of admission, who are not resident in the parish of Godalming, whose parent/carer attends Sunday Mass at least once a month"
+55,Catholic Resident outside Parish,Religion,Enhanced,"Catholic children without a brother or sister at the time of admission, who are not resident in the Cranleigh and Bramley parish. 6 Other LAC & PLAC. 7 Catechumens, Candidates for Reception into the Church and children who are members of an Orthodox Church"
+56,Catholic Sibling,Religion,Enhanced,"Catholic children with a brother or sister at the school at the time of admission, who are not resident in the Cranleigh and Bramley parish"
+57,Catholic Sibling,Religion,Enhanced,"Catholic children with a brother or sister at the school at the time of admission, who are not resident in the parish of Godalming, whose parent/carer attends Sunday Mass at least once a month"
+58,Catholic Sibling Resident in Parish,Religion,Enhanced,"Catholic children with a brother or sister at the school at the time of admission, resident in one of the following parishes: Farnham; Ash with Heath End, Haslemere, Hindhead and Chiddingfold, whose parent/carer attends Sunday Mass at least once a month"
+59,Catholic Sibling Resident in Parish,Religion,Enhanced,"Catholic children with a brother or sister at the school at the time of admission, resident in the Cranleigh and Bramley parish"
+60,Catholic Sibling Resident in Parish,Religion,Enhanced,"Catholic children with a brother or sister at the school at the time of admission, resident in the parish of Godalming, whose parent/carer attends Sunday Mass at least once a month"
+61,Catholic Sibling Resident outside Parish,Religion,Enhanced,"Catholic children with a brother or sister at the school at the time of admission, who are not resident in the parishes named above, whose parent/carer attends Sunday Mass at least once a month"
+62,Other Catholic,Religion,Enhanced,Other Catholic children
+63,Practising Anglican worship outside Parish,Religion,Enhanced,"Children who live outside the ecclesiastical parish boundary of All Saints, Grayswood and whose parents worship at another Anglican Church"
+64,Practising Christian worship,Religion,Enhanced,Children and parent(s) who are regular worshippers at a Christian church
+65,Practising Christian worship,Religion,Enhanced,Children of other Christian denominations whose membership is evidenced by a minister of religion
+66,Practising Christian worship outside Parish,Religion,Enhanced,"Children who live outside the ecclesiastical parish boundary of All Saints, Grayswood and whose parents worship at another Christian church"
+67,Practising other worship,Religion,Enhanced,Children of other faiths whose membership is evidence by a religious leader
+68,Practising other worship,Religion,Enhanced,Children of other faiths whose membership is evidenced by a religious leader
+69,Practising worship,Religion,Enhanced,"Children living outside the areas specified in criterion 4 who can show regular attendance at a Christian church, which is also outside the areas specified in criterion 4"
+70,Practising worship,Religion,Enhanced,Children of parents who are regular worshippers at a Christian church of any denomination
+71,Practising worship,Religion,Enhanced,"Children who have a parent with a definite, current commitment with another Christian Church and live within the parish boundary of St Peter’s Church, Wrecclesham"
+72,Practising worship,Religion,Enhanced,Children whose parents are of the Christian faith and attend their local church regularly (monthly) for at least two years
+73,Practising worship,Religion,Enhanced,Children whose parents regularly worship at St Bartholomew’s and/or St Christopher’s Churches in Haslemere
+74,Practising worship (specified church),Religion,Enhanced,"Children and /or a parent with a definite, current commitment to St Peter’s Church, Wrecclesham, another Christian church or a place of worship of another faith."
+75,Practising worship (specified church),Religion,Enhanced,"Children for whom St John’s is not the nearest school but who are, in priority order: a) children of parents who are regular worshippers at St John’s the Evangelist Church, Churt with Rushmoor"
+76,Practising worship (specified church),Religion,Enhanced,"Children resident in the Ecclesiastical Parishes of Elstead, Thursley or Shackleford with Peper Harow, and who worship with their parents regularly at the churches of St James, St Michael and All Angels, St Mary The Virgin or St Nicholas"
+77,Practising worship (specified church),Religion,Enhanced,Children resident in the Parishes of Elstead or Thursley and who worship with their parents regularly at St James’ or St Michael and All Angels
+78,Practising worship (specified church),Religion,Enhanced,"Children who have a parent with a definite, current commitment to St Peter’s Church, Wrecclesham"
+79,"Practising worship (specified church), resident outside Parish",Religion,Enhanced,Children living outside the areas specified in criterion 4 who can show regular attendance at a Christian church situated in the civil parish of Wonersh or in the ecclesiastical parishes of Shamley Green or Wonersh with Blackheath
+80,"Practising worship (specified church), resident outside Parish",Religion,Enhanced,"Children resident outside the Ecclesiastical Parishes of Elstead, Thursley or Shackleford with Peper Harow, and who worship with their parents regularly at the churches of St James, St Michael and All Angels, St Mary The Virgin, St Nicholas or within other churches or faiths."
+81,"Practising worship (specified church), resident outside Parish",Religion,Enhanced,Children resident outside the Parishes of Elstead and Thursley and who worship with their parents regularly at St James or St Michael and All Angels or within other churches or faiths
+82,"Practising worship (specified church), resident outside Parish",Religion,Enhanced,"Children who live outside the ecclesiastical parish boundary but whose parents are regular worshippers at the church of St Mary the Virgin, Frensham or The Good Shepherd, Dockenfield"
+83,"Practising worship (specified church), resident outside Parish",Religion,Enhanced,hildren living outside the areas specified in criterion 4 who can show regular attendance at a Christian church situated in the civil parish of Wonersh or in the ecclesiastical parishes of Shamley Green or Wonersh with Blackheath
+84,Practising worship in Parish,Religion,Enhanced,Children of families who can show membership of a Church of England Church within the Ecclesiastical Parishes of Bramley and Grafham
+85,Practising worship in Parish,Religion,Enhanced,"Children resident in the Ecclesiastical Parishes of Elstead, Thursley or Shackleford with Peper Harow and who worship with their parents regularly within other churches or faiths."
+86,Practising worship in Parish,Religion,Enhanced,Children resident within the Parishes of Elstead or Thursley and who worship with their parents regularly within other churches or faiths
+87,Practising worship in Parish,Religion,Enhanced,"Children who live outside the ecclesiastical parish boundary of All Saints, Grayswood and whose parents worship at All Saints Church, Grayswood"
+88,Practising worship outside Parish,Religion,Enhanced,"Children of families living outside the Ecclesiastical Parishes of Bramley and Grafham, who can show membership of a Parish Church"
+89,Catchment,,Enhanced,Children living within the catchment area of St Andres ComE Infant School
