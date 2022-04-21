@@ -14,9 +14,9 @@ Contains the raw data used for the analysis. Note that due to the current COVID-
 
 The file above contains additional data relating to primary schools in Hampshire (LA no. 850) and Surrey (LA no. 936). In order to generate this file, I  made the following selections:
 
-1. Find an establishment by local authority: Hampshire and Surrey. Includes open schools only.
-2. On the search results page I filtered the results to All-through, Middle Deemed Primary and Primary
-3. On the next page I opted to choose a specific set of data and entered the following fields: DistrictAdministrative(name), EstablishmentNumber, EstablishmentName, EstablishmentTypeGroup(name), LA(code), OfstedRating(name), PercentageFSM, PhaseOfEducation(name), ReligiousCharacter(name), URN
+1. Find an establishment by local authority: Hampshire and Surrey. Includes open and closed schools.
+2. On the search results page I filtered the results to All-through, Middle Deemed Primary and Primary.
+3. On the next page I opted to choose the full set of data, including links.
 
 #### [ks2](/data-in/ks2)
 
@@ -65,7 +65,7 @@ Contains saved rda files.
 ### [ref](/ref)
 Contains reference materials related to this analysis. Each file in this directory contains additional details about the contents of the raw data csv files in the [data-in](/data-in) folder. Further information and definitions of commonly used terms in the field of education performance measures can be found on the [GIAS glossary page](https://get-information-schools.service.gov.uk/glossary).
 
-### schools-data-prep.R
+### [schools-data-prep.R](schools-data-prep.R)
 R script to read, clean and prepare data from the [data-in](/data-in) directory for analysis.
 
 ## Sources and Credits
