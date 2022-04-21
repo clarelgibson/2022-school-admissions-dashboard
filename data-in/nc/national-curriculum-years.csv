@@ -1,0 +1,15 @@
+nc_key,nc_year,nc_year_description,education_phase,education_subphase,key_stage,statutory_age_min,statutory_age_max
+1,R,Reception,Primary,Infant,EYFS,4,5
+2,1,Year 1,Primary,Infant,KS1,5,6
+3,2,Year 2,Primary,Infant,KS1,6,7
+4,3,Year 3,Primary,Junior,KS2,7,8
+5,4,Year 4,Primary,Junior,KS2,8,9
+6,5,Year 5,Primary,Junior,KS2,9,10
+7,6,Year 6,Primary,Junior,KS2,10,11
+8,7,Year 7,Secondary,Secondary,KS3,11,12
+9,8,Year 8,Secondary,Secondary,KS3,12,13
+10,9,Year 9,Secondary,Secondary,KS3,13,14
+11,10,Year 10,Secondary,Secondary,KS4,14,15
+12,11,Year 11,Secondary,Secondary,KS4,15,16
+13,12,Year 12,Secondary,Sixth-Form,None,16,17
+14,13,Year 13,Secondary,Sixth-Form,None,17,18
