@@ -17,7 +17,7 @@ library(tidyverse)
 # academic year 2014/15 through to 2021/2022. The data is aggregated 
 # by local authority.
 r_offers_la <- 
-  read_csv("data-in/2021_appsandoffers.csv")
+  read_csv("data-in/offers-la/offers-by-la.csv")
 
 # 3.2 Offers by School ===============================================
 # This dataset includes admissions data for each school within 
@@ -85,7 +85,7 @@ r_offers_crit <- offers_crit_list %>%
 # code 936) and Hampshire (LA code 850). The data is aggregated by
 # school.
 r_info <- 
-  read_csv("data-in/2021_gias.csv")
+  read_csv("data-in/info/2021-gias.csv")
 
 # 3.5 KS2 Performance ================================================
 # This dataset includes details of primary school performance at Key
