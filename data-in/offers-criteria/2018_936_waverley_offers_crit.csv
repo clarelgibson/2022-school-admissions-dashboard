@@ -173,7 +173,7 @@ intake_year,school_name,la_code,estab_code,dfe_no,criterion,criterion_category,c
 2018,St Andrew's Church of England Infant School,936,3024,936/3024,LAC & PLAC,Priority,Looked after and previously looked after children,1,0
 2018,St Andrew's Church of England Infant School,936,3024,936/3024,Exceptional,Priority,Exceptional social/medical need,2,0
 2018,St Andrew's Church of England Infant School,936,3024,936/3024,Siblings,Family Ties,"Children who will have a sibling at the school or at an infant/junior school which operates shared sibling priority, at the time of the child’s admission",3,3
-2018,St Andrew's Church of England Infant School,,,,Catchment,,Children living within the catchment area of St Andres ComE Infant School,4,0
+2018,St Andrew's Church of England Infant School,936,3024,936/3024,Catchment,Defined Residence,Children living within the catchment area of St Andrew’s CofE Infant School,4,0
 2018,St Andrew's Church of England Infant School,936,3024,936/3024,Others by Distance,Distance,"Any other children, prioritised according to the distance they live from the school",5,10
 2018,St Andrew's Church of England Infant School,936,3024,936/3024,Centrally offered,Central & Lates,Children offered a place but for whom this school was not one of their preferred schools,6,0
 2018,St Andrew's Church of England Infant School,936,3024,936/3024,EHCP,Priority,"Children with an Education, Health and Care Plan",7,0

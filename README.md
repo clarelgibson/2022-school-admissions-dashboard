@@ -12,11 +12,13 @@ Contains the raw data used for the analysis. Note that due to the current COVID-
 
 * Source: [Get Information About Schools](https://get-information-schools.service.gov.uk/)
 
-The file above contains additional data relating to primary schools in Hampshire (LA no. 850) and Surrey (LA no. 936). In order to generate this file, I  made the following selections:
+The file above contains additional data relating to primary and secondary schools in all local authorities. It excludes nurseries, special schools, children's centers, pupil referral units and post-16 education. In order to generate this file, I  made the following selections:
 
-1. Find an establishment by local authority: Hampshire and Surrey. Includes open and closed schools.
-2. On the search results page I filtered the results to All-through, Middle Deemed Primary and Primary.
+1. Find an establishment: All establishments. Includes open and closed schools.
+2. On the search results page I filtered the Phase of education to All-through, Middle Deemed Primary, Middle Deemed Secondary, Primary and Secondary.
 3. On the next page I opted to choose the full set of data, including links.
+
+Once the file was downloaded I performed one additional preparatory step. I ensured that every column had a heading by scrolling to the very right of the table and renaming the blank columns. These are columns containing additional linked establishments so I used a `Links 1`, `Links 2`, `Links 3` etc naming convention.
 
 #### [ks2](/data-in/ks2)
 
@@ -29,6 +31,8 @@ Contains Key Stage 2 performance data for primary schools in Hampshire (Local Au
 3. Data types: Final key stage 4
 
 Further details including an explanation of the terminology used in these data files can be found in the [ref](/ref) folder.
+
+Note that due to COVID-19, the UK Government [cancelled all statutory national curriculum assessments](https://www.gov.uk/government/publications/school-and-college-accountability-approach-2020-to-2022/school-and-college-accountability-2020-to-2021-academic-year) due to be held in summer 2020 and 2021 at both Key Stage 1 and Key Stage 2. Therefore, no data is available for the 2019/20 or 2020/21 academic years. For the 2021/22 academic year, the Government does intend to publish KS2 data. This data should be made available in autumn 2022.
 
 #### [offers-criteria](/data-in/offers-criteria)
 
@@ -50,7 +54,7 @@ Further details including an explanation of the terminology used in these data f
 
 #### [offers-la](/data-in/offers-la)
 
-* Source: [Explore Education Statistics Service](https://explore-education-statistics.service.gov.uk/find-statistics/secondary-and-primary-school-applications-and-offers#dataDownloads-1)
+* Source: [Explore Education Statistics Service](   https://explore-education-statistics.service.gov.uk/find-statistics/secondary-and-primary-school-applications-and-offers#dataDownloads-1)
 
 This file contains statistics relating to the number of offers made to applicants for secondary and primary school places for academic years from 2014/15 through to 2021/22, and the proportion which received preferred offers.
 
